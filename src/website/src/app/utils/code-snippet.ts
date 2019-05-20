@@ -9,6 +9,13 @@ import { CodeHighlight } from './code-highlight';
 @Component({
   selector: 'clr-code-snippet',
   template: `
+        <ng-container *ngIf="stackblitz.length">
+          <div class="alignRight">
+            <a class="btn btn-sm btn-link" href="https://stackblitz.com/edit/{{ stackblitz }}">
+              StackBlitz Example
+            </a>
+          </div>
+        </ng-container>
         <ng-container *ngIf="!disablePrism">
             <pre><code [clr-code-highlight]="'language-'+language">{{code.trim()}}</code></pre>
         </ng-container>
@@ -23,6 +30,12 @@ import { CodeHighlight } from './code-highlight';
             padding: 12px;
             max-height: none;
         }
+
+        .alignRight {
+          display: flex;
+          justify-content: flex-end;
+          flex-direction: row;
+        }
     `,
   ],
 })
@@ -32,6 +45,7 @@ export class CodeSnippet implements AfterViewInit {
   @Input('clrCode') public code: string;
   @Input('clrLanguage') public language: string = 'html';
   @Input('clrDisablePrism') public disablePrism: boolean = false;
+  @Input('stackblitz') public stackblitz: string = '';
 
   ngAfterViewInit(): void {
     if (this.codeHighlight) {
