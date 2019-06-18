@@ -32,6 +32,43 @@ export class KSWizards {
   private aClrWizardPageButtons: ClrWizardPageButtons;
   private aClrWizardPageHeaderActions: ClrWizardPageHeaderActions;
 
+  // Async Form Wizard Demo
+  @ViewChild('asyncFormWizard', { static: true })
+  asyncFormWizard: ClrWizard;
+
+  @ViewChild('myForm', { static: true })
+  formData: any;
+
+  loadingFlag: boolean = false;
+  errorFlag: boolean = false;
+  answer: number = null;
+  open: boolean = false;
+
+  doCancel(): void {
+    this.asyncFormWizard.close();
+    this.onFinish();
+  }
+
+  onCommit(): void {
+    const value: any = this.formData.value;
+    this.loadingFlag = true;
+    this.errorFlag = false;
+
+    setTimeout(() => {
+      if (value.answer === '42') {
+        this.asyncFormWizard.forceNext();
+      } else {
+        this.errorFlag = true;
+      }
+      this.loadingFlag = false;
+    }, 1000);
+  }
+
+  onFinish() {
+    this.formData.reset();
+    this.asyncFormWizard.reset();
+  }
+
   // Form Wizard Demo
   @ViewChild('formWizard', { static: false })
   formWizard: ClrWizard;
