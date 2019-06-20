@@ -6,16 +6,16 @@
 import { Component } from '@angular/core';
 
 const EXAMPLE = `
-<div clrSpinner>
+<span clrSpinner>
     Loading data...
-</div>
+</span>
 `;
 
 const EXAMPLE1 = `
-<div  class="spinner-inline" clrSpinner>Downloading ...</div>
-<div>
+<span  class="spinner-inline" clrSpinner>Downloading ...</span>
+<span>
     Downloading ...
-</div>
+</span>
 `;
 
 @Component({

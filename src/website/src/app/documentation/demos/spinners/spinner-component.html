@@ -5,23 +5,22 @@
   -->
 
 <h3 id="guidelines">Spinner Component</h3>
-
-<clr-code-snippet [clrCode]="example"></clr-code-snippet>
+<p>
+    Clarity provide component <code class="clr-code">clrSpinner</code> that could be attached to any HTML element. 
+</p>
 
 <div class="clr-example squeeze">
-    <div clrSpinner>Loading data...</div>
+    <span clrSpinner>Loading data ...</span>
 </div>
+<clr-code-snippet [clrCode]="example"></clr-code-snippet>
 
 <h5>Modify</h5>
 <p>
-    Add modifier classes like <code class="clr-code">.spinner-inline</code>
+    Add modifier classes like <code class="clr-code">.spinner-inline</code> or any of above. 
 </p>
 
-<clr-code-snippet [clrCode]="example1"></clr-code-snippet>
-
 <div class="clr-example squeeze">
-    <div class="spinner-inline" clrSpinner>Downloading...</div>
-    <div>
-        Downloading ...
-    </div>
+    <span class="spinner-inline" clrSpinner>Downloading...</span>
+    <span> Downloading ...</span>
 </div>
+<clr-code-snippet [clrCode]="example1"></clr-code-snippet>
