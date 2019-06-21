@@ -3,20 +3,16 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-import { Directive, Renderer2, ElementRef, OnDestroy } from '@angular/core';
+import { Directive } from '@angular/core';
+
+export const SPINNER_BASE_CLASS = 'spinner';
 
 @Directive({
   selector: '[clrSpinner]',
   host: {
-    class: 'spinner',
+    class: SPINNER_BASE_CLASS,
     '[attr.aria-live]': '"polite"',
     '[attr.aria-busy]': 'true',
   },
 })
-export class ClrSpinnerTag implements OnDestroy {
-  constructor(private renderer: Renderer2, private hostElement: ElementRef) {}
-
-  ngOnDestroy(): void {
-    this.renderer.setAttribute(this.hostElement.nativeElement, 'aria-busy', 'false');
-  }
-}
+export class ClrSpinnerTag {}

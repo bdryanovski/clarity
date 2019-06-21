@@ -29,6 +29,8 @@ export declare const CLR_NAVIGATION_DIRECTIVES: Type<any>[];
 
 export declare const CLR_SIGNPOST_DIRECTIVES: Type<any>[];
 
+export declare const CLR_SPINNER_DIRECTIVES: Type<any>[];
+
 export declare const CLR_STACK_VIEW_DIRECTIVES: Type<any>[];
 
 export declare const CLR_TABS_DIRECTIVES: Type<any>[];
@@ -232,6 +234,7 @@ export declare abstract class ClrCommonStrings {
     hide?: string;
     info?: string;
     lastPage?: string;
+    loading?: string;
     maxValue?: string;
     minValue?: string;
     more?: string;
@@ -1003,6 +1006,9 @@ export declare class ClrSignpostTrigger implements OnDestroy {
     constructor(ifOpenService: IfOpenService, renderer: Renderer2, el: ElementRef);
     ngOnDestroy(): void;
     onSignpostTriggerClick(event: Event): void;
+}
+
+export declare class ClrSpinnerModule {
 }
 
 export declare class ClrStackBlock implements OnInit {

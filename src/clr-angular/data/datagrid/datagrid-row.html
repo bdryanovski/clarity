@@ -59,7 +59,7 @@
                         [attr.dir]="expand.expanded ? 'down' : 'right'"
                         [attr.title]="expand.expanded ? commonStrings.collapse : commonStrings.expand"></clr-icon>
             </button>
-            <div class="spinner spinner-sm" *ngIf="expand.loading"></div>
+            <div *ngIf="expand.loading" class="spinner-sm" clrSpinner>{{ commonStrings.loading }}</div>
           </ng-container>
         </div>
         <ng-container #scrollableCells></ng-container>

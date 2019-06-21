@@ -125,4 +125,8 @@ export abstract class ClrCommonStrings {
    * Datagrid numeric filter: max
    */
   maxValue?: string;
+  /**
+   * Loaders/Spinners
+   */
+  loading?: string;
 }

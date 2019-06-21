@@ -39,6 +39,7 @@ export class ClrCommonStringsService implements ClrCommonStrings {
   totalPages = 'Total Pages';
   minValue = 'Min value';
   maxValue = 'Max value';
+  loading = 'Loading';
 }
 
 export function commonStringsFactory(existing?: ClrCommonStrings): ClrCommonStrings {

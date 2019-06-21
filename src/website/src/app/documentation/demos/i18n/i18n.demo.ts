@@ -49,5 +49,6 @@ export class I18nDemo extends ClarityDocComponent {
     { key: 'totalPages', role: 'Datagrid: pagination total pages button text' },
     { key: 'minValue', role: 'Datagrid: minimum value (numeric filters)' },
     { key: 'maxValue', role: 'Datagrid: maximum value (numeric filters' },
+    { key: 'loading', role: 'Display loading text (Default: Loading)' },
   ];
 }
