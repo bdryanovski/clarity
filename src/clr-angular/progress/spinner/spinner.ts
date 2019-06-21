@@ -3,11 +3,10 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-import { Component, Renderer2, ElementRef, OnDestroy } from '@angular/core';
+import { Directive, Renderer2, ElementRef, OnDestroy } from '@angular/core';
 
-@Component({
+@Directive({
   selector: '[clrSpinner]',
-  template: '<ng-content></ng-content>',
   host: {
     class: 'spinner',
     '[attr.aria-live]': '"polite"',
