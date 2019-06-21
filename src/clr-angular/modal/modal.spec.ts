@@ -11,6 +11,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FocusTrapDirective } from '../utils/focus-trap/focus-trap.directive';
 import { ClrFocusTrapModule } from '../utils/focus-trap/focus-trap.module';
 
+import { ClrCommonStringsService } from '../utils/i18n/common-strings.service';
+
 import { ClrModal } from './modal';
 import { ClrModalModule } from './modal.module';
 
@@ -60,6 +62,7 @@ class TestDefaultsComponent {
 describe('Modal', () => {
   let fixture: ComponentFixture<any>;
   let compiled: any;
+  const commonStrings = new ClrCommonStringsService();
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -268,4 +271,22 @@ describe('Modal', () => {
 
     expect(focusable).toBeDefined();
   });
+
+  it('close button should have attribute aria-label', () => {
+    expect(compiled.querySelector('.close').getAttribute('aria-label')).toBe(commonStrings.close);
+  });
+
+  it(
+    'should have text based boundaries for screen readers',
+    fakeAsync(() => {
+      // MacOS + Voice Over does not properly isolate modal content so
+      // we must give screen reader users text based warnings when they
+      // are entering and leaving modal content.
+      getModalInstance(fixture).open();
+      fixture.detectChanges();
+      const messages = compiled.querySelectorAll('.clr-sr-only');
+      expect(messages[0].innerText).toBe('Beginning of Modal Content');
+      expect(messages[1].innerText).toBe('End of Modal Content');
+    })
+  );
 });

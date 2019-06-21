@@ -126,6 +126,14 @@ export abstract class ClrCommonStrings {
    */
   maxValue?: string;
   /**
+   * Modal start of content
+   */
+  modalContentStart?: string;
+  /**
+   * Modal end of content
+   */
+  modalContentEnd?: string;
+  /**
    * Loaders/Spinners
    */
   loading?: string;
