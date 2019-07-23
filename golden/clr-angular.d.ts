@@ -62,9 +62,9 @@ export declare class ClrAccordionDescription {
 
 export declare class ClrAccordionPanel implements OnInit, OnChanges {
     readonly AccordionStatus: typeof AccordionStatus;
+    accordionDescription: QueryList<ClrAccordionDescription>;
     commonStrings: ClrCommonStrings;
     disabled: boolean;
-    focusHeader: boolean;
     id: string;
     panel: Observable<AccordionPanelModel>;
     panelOpen: boolean;
@@ -1031,13 +1031,17 @@ export declare class ClrSignpostTrigger implements OnDestroy {
 
 export declare class ClrSpinner {
     assertive: boolean;
-    readonly assignClass: string;
-    inline: boolean;
-    inverse: boolean;
-    medium: boolean;
+    clrInline: boolean | string;
+    clrInverse: boolean | string;
+    clrMedium: boolean | string;
+    clrSmall: boolean | string;
+    readonly inlineClass: boolean;
+    readonly inverseClass: boolean;
+    readonly mediumClass: boolean;
     off: boolean;
     readonly setAriaLive: "assertive" | "off" | "polite";
-    small: boolean;
+    readonly smallClass: boolean;
+    readonly spinnerClass: boolean;
 }
 
 export declare class ClrSpinnerModule {
