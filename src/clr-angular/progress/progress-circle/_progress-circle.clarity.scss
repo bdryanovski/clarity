@@ -2,11 +2,6 @@
 // This software is released under MIT license.
 // The full license information can be found in LICENSE in the root directory of this project.
 
-@function progressNow($base, $value) {
-  // convert to
-  $pr: calc(1 - ($value/100));
-  @return calc($base * $pr);
-}
 @mixin min-height($size) {
   min-height: $size;
   min-width: $size;
@@ -14,22 +9,15 @@
   width: $size;
 }
 
-$clr-spinner-bg-color: #e6e6e6;
-$clr-spinner-color: #0079b8;
-$clr-spinner-opacity: 1;
-
-$clr-progress-cicle-dasharray: 2 * 3.14 * 56;
-$clr-progress-circle-dashoffset: $clr-progress-cicle-dasharray * (1 - (80 / 100));
+$clr-progress-circle-stroke-width: 5px !default;
+$clr-progress-circle-dasharray: 2 * 3.14 * 33 !default;
+$clr-progress-circle-dashoffset: $clr-progress-circle-dasharray * (1 - (80 / 100)) !default;
 
 /* */
-
-@import '../../utils/mixins.clarity.scss';
-
 @include exports('progress-circle.clarity') {
   .progressCircle {
     position: relative;
 
-    // could do it with mixin here
     @include min-height(3rem);
     display: inline-block;
 
@@ -40,14 +28,15 @@ $clr-progress-circle-dashoffset: $clr-progress-cicle-dasharray * (1 - (80 / 100)
 
     .__base {
       stroke: $clr-spinner-bg-color;
-      stroke-width: 8;
+      stroke-opacity: $clr-spinner-opacity;
+      stroke-width: $clr-progress-circle-stroke-width;
       fill: none;
     }
     .__value {
       stroke: $clr-spinner-color;
       fill: none;
-      stroke-width: 8;
-      stroke-dasharray: $clr-progress-cicle-dasharray;
+      stroke-width: $clr-progress-circle-stroke-width;
+      stroke-dasharray: $clr-progress-circle-dasharray;
       //stroke-dashoffset: progressNow($clr-progress-circle-dashoffset, attr(data-progress number, 1));
     }
 
