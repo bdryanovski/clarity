@@ -16,13 +16,21 @@ $clr-progress-circle-dashoffset: $clr-progress-circle-dasharray * (1 - (80 / 100
 
 /* */
 @include exports('progress-circle.clarity') {
-  .progressCircle {
+  .progress-circle {
     position: relative;
 
     @include min-height(3rem);
     display: inline-block;
 
-    .progressCircleImage {
+    &.progress-circle-md {
+      @include min-height(1.5rem);
+    }
+
+    &.progress-circle-sm {
+      @include min-height(0.75rem);
+    }
+
+    .progress-circle-svg {
       // fix rotation
       transform: rotate(-90deg);
     }
@@ -41,13 +49,13 @@ $clr-progress-circle-dashoffset: $clr-progress-circle-dasharray * (1 - (80 / 100
       //stroke-dashoffset: progressNow($clr-progress-circle-dashoffset, attr(data-progress number, 1));
     }
 
-    .progressLabel {
+    .progress-circle-label {
       position: absolute;
       z-index: 1;
       width: 100%;
       left: 0;
       top: 0;
-      line-height: 5.1em; // that 0.1 is not cool
+      line-height: 5em;
       color: $clr-progress-circle-label-color;
       display: block;
       text-align: center;
