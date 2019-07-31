@@ -77,6 +77,10 @@ export const APP_ROUTES: Routes = [
     path: 'progress-bars',
     loadChildren: () => import('./progress-bars/progress-bars.demo.module').then(m => m.ProgressBarsDemoModule),
   },
+  {
+    path: 'progress-circle',
+    loadChildren: () => import('./progress-circle/progress-circle.demo.module').then(m => m.ProgressCircleDemoModule),
+  },
   { path: 'radios', loadChildren: () => import('./radios/radios.demo.module').then(m => m.RadiosDemoModule) },
   { path: 'selects', loadChildren: () => import('./selects/selects.demo.module').then(m => m.SelectsDemoModule) },
   {
