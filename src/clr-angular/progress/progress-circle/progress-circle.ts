@@ -3,7 +3,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-import { Component, Input, ngOnInit, HostBinding } from '@angular/core';
+import { Component, Input, OnInit, HostBinding } from '@angular/core';
 import { isBooleanAttributeSet } from '../../utils/component/is-boolean-attribute-set';
 
 const sizeCube = 72;
@@ -25,7 +25,7 @@ const MAGIC_NUMBER = 0.1;
     <label class="progress-circle-label" aria-live="polite">{{ clrValue }}% </label>
   `,
 })
-export class ClrProgressCircle implements ngOnInit {
+export class ClrProgressCircle implements OnInit {
   @HostBinding('class.progress-circle')
   get progressCircleClass() {
     return true;
@@ -33,10 +33,10 @@ export class ClrProgressCircle implements ngOnInit {
 
   private _clrValue: number = 0;
   @Input('clrValue')
-  get clrValue(): string {
+  get clrValue() {
     return this._clrValue;
   }
-  set clrValue(value: number): void {
+  set clrValue(value: number) {
     this.strokeDashoffset = this.calculateOffset();
     this._clrValue = value;
   }
