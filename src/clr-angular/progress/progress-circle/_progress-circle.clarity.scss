@@ -2,6 +2,22 @@
 // This software is released under MIT license.
 // The full license information can be found in LICENSE in the root directory of this project.
 
+$svg_data: 'data:image/svg+xml;charset=utf8';
+$clr-progress-circle-label-color: $clr-color-neutral-800 !default;
+$clr-progress-circle-stroke-width: 5px !default;
+$clr-progress-circle-dasharray: 207.345 !default;
+
+/**
+* Generate classes so it could change the progress
+*/
+@mixin generateProgressStyles() {
+  @for $_ from 1 through 100 {
+    &.progress-circle-p#{$_} .__value {
+      stroke-dashoffset: $clr-progress-circle-dasharray * (1 - ($_/100)) - 0.1;
+    }
+  }
+}
+
 @mixin min-height($size) {
   min-height: $size;
   min-width: $size;
@@ -9,10 +25,15 @@
   width: $size;
 }
 
-$clr-progress-circle-label-color: $clr-color-neutral-800 !default;
-$clr-progress-circle-stroke-width: 5px !default;
-$clr-progress-circle-dasharray: 2 * 3.14 * 33 !default;
-$clr-progress-circle-dashoffset: $clr-progress-circle-dasharray * (1 - (80 / 100)) !default;
+/* 
+  I don't think that this will work for me?! 
+
+  Or at least I will have to generate minimum of 100svgs
+*/
+@function generateProgressCircleSVG() {
+  $progress-circle-icon: '+%3Csvg+xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22++viewBox%3D%220+0+72+72%22%3E%0D%0A++++++%3Ccircle+class%3D%22__base%22+cx%3D%2236%22+cy%3D%2236%22+r%3D%2233%22+%2F%3E%0D%0A++++++%3Ccircle+class%3D%22__value%22+cx%3D%2236%22+cy%3D%2236%22+r%3D%2233%22+%2F%3E%0D%0A%3C%2Fsvg%3E';
+  @return url('#{$svg_data},#{$progress-circle-icon}');
+}
 
 /* */
 @include exports('progress-circle.clarity') {
@@ -21,9 +42,11 @@ $clr-progress-circle-dashoffset: $clr-progress-circle-dasharray * (1 - (80 / 100
 
     @include min-height(3rem);
     display: inline-block;
+    line-height: 5em;
 
     &.progress-circle-md {
       @include min-height(1.5rem);
+      line-height: 2.8em;
     }
 
     &.progress-circle-sm {
@@ -36,18 +59,20 @@ $clr-progress-circle-dashoffset: $clr-progress-circle-dasharray * (1 - (80 / 100
     }
 
     .__base {
+      fill: none;
       stroke: $clr-spinner-bg-color;
       stroke-opacity: $clr-spinner-opacity;
       stroke-width: $clr-progress-circle-stroke-width;
-      fill: none;
     }
+
     .__value {
-      stroke: $clr-spinner-color;
       fill: none;
+      stroke: $clr-spinner-color;
       stroke-width: $clr-progress-circle-stroke-width;
       stroke-dasharray: $clr-progress-circle-dasharray;
-      //stroke-dashoffset: progressNow($clr-progress-circle-dashoffset, attr(data-progress number, 1));
     }
+
+    @include generateProgressStyles();
 
     .progress-circle-label {
       position: absolute;
@@ -55,7 +80,7 @@ $clr-progress-circle-dashoffset: $clr-progress-circle-dasharray * (1 - (80 / 100
       width: 100%;
       left: 0;
       top: 0;
-      line-height: 5em;
+      line-height: inherit;
       color: $clr-progress-circle-label-color;
       display: block;
       text-align: center;

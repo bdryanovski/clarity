@@ -6,19 +6,41 @@
 import { Component, Input, OnInit, HostBinding } from '@angular/core';
 import { isBooleanAttributeSet } from '../../utils/component/is-boolean-attribute-set';
 
-const sizeCube = 72;
+/**
+ * How to get new numbers if needed
+ *
+ * Basic size is squre with size 72 (S).
+ * Sw is the circle width in our case this is 5
+ * R is the radios of the circle
+ * R = ( S / 2 - Sw / 2)
+ * cx & xy are half the circle size (S/2)
+ *
+ * stroke-dasharray = 2 * Math.PI * R
+ *
+ * To calculate the offset
+ *
+ * stroke-dashoffset = stroke-dasharray * ( 1 - (value / 100) ) - MAGIC_NUMBER;
+ *
+ * when value could be between 1 and 100
+ */
+const STROKE_DASHARRAY: number = 207.345;
+
 /**
  * Magic number is making the circle a little less
  * so when it reach 100% it stay the correct color
  */
-const MAGIC_NUMBER = 0.1;
+const MAGIC_NUMBER: number = 0.1;
+/**
+ * @NOTE: When making changes to this sizes please update them also
+ * into _progress-circle.clarity.scss
+ */
 
 @Component({
   selector: 'clr-progress-circle',
   template: `
-    <svg class="progress-circle-svg" [attr.viewBox]="viewBox">
-      <circle class="__base" [attr.cx]="cXY" [attr.cy]="cXY" [attr.r]="R" />
-      <circle class="__value" [attr.cx]="cXY" [attr.cy]="cXY" [attr.r]="R" 
+    <svg class="progress-circle-svg" viewBox="0 0 72 72">
+      <circle class="__base" cx="36" cy="36" r="33" />
+      <circle class="__value" cx="36" cy="36" r="33" 
         [attr.stroke-dashoffset]="strokeDashoffset"
       />
     </svg>
@@ -26,11 +48,6 @@ const MAGIC_NUMBER = 0.1;
   `,
 })
 export class ClrProgressCircle implements OnInit {
-  @HostBinding('class.progress-circle')
-  get progressCircleClass() {
-    return true;
-  }
-
   private _clrValue: number = 0;
   @Input('clrValue')
   get clrValue() {
@@ -39,6 +56,12 @@ export class ClrProgressCircle implements OnInit {
   set clrValue(value: number) {
     this.strokeDashoffset = this.calculateOffset();
     this._clrValue = value;
+  }
+
+  // Basic class
+  @HostBinding('class.progress-circle')
+  get progressCircleClass() {
+    return true;
   }
 
   // Medium size
@@ -65,21 +88,14 @@ export class ClrProgressCircle implements OnInit {
     this._small = isBooleanAttributeSet(value);
   }
 
-  private viewBox: string = `0 0 ${sizeCube} ${sizeCube}`;
-
-  // 33
-
-  // Math time
-  private R: number = Math.floor(sizeCube / 2 - 5 / 2);
-  private cXY: number = sizeCube / 2;
-  private strokeDasharray: number = 2 * Math.PI * this.R;
-  private strokeDashoffset: number = this.strokeDasharray;
+  // 207.345
+  private strokeDashoffset: number = STROKE_DASHARRAY;
 
   ngOnInit() {
     this.strokeDashoffset = this.calculateOffset();
   }
 
   calculateOffset() {
-    return this.strokeDasharray * (1 - this.clrValue / 100) - MAGIC_NUMBER || this.strokeDasharray;
+    return STROKE_DASHARRAY * (1 - this.clrValue / 100) - MAGIC_NUMBER || STROKE_DASHARRAY;
   }
 }
