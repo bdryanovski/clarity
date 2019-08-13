@@ -60,4 +60,8 @@ export const commonStringsDefault: ClrCommonStrings = {
   daypickerSRCurrentMonthPhrase: 'The current month is {CURRENT_MONTH}',
   daypickerSRCurrentYearPhrase: 'The current year is {CURRENT_YEAR}',
   daypickerSRCurrentDecadePhrase: 'The current decade is {DECADE_RANGE}',
+
+  // TreeView
+  treeViewExpandAriaLabel: 'Expand',
+  treeViewColapseAriaLabel: 'Colapse',
 };

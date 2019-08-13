@@ -35,6 +35,25 @@ class TestComponent {
   expandable: boolean | undefined;
 }
 
+@Component({
+  template: `<clr-tree-node 
+    #node
+    [clrAriaLiveExpandNode]="clrAriaLiveExpanNodeText"
+    [clrAriaLiveColapseNode]="clrAriaLiveColapseNodeText"
+    [clrExpandable]="expandable"
+    >
+    Hello world
+    <clr-tree-node *ngIf="withChild">Child</clr-tree-node>
+  </clr-tree-node>`,
+})
+class TestAriaComponent {
+  @ViewChild('node', { static: false })
+  tree: ClrTreeNode<void>;
+  clrAriaLiveExpanNodeText: string = 'Show more';
+  clrAriaLiveColapseNodeText: string = 'Show less';
+  expandable: boolean = true;
+}
+
 interface TsApiContext {
   node: ClrTreeNode<void>;
   parent: ClrTreeNode<void>;
@@ -193,6 +212,22 @@ export default function(): void {
         expect(this.clarityDirective.expanded).toBeTrue();
         this.clarityDirective.expanded = false;
         expect(this.hostComponent.expanded).toBeFalse();
+      });
+    });
+
+    describe('Aria', function() {
+      spec(ClrTreeNode, TestAriaComponent, ClrTreeViewModule, { imports: [NoopAnimationsModule, ClrIconModule] });
+
+      it('should be able to set aria-label for Expand and Colapse from outside', function(this: Context) {
+        expect(this.clarityDirective.ariaLabelExpandNode).toBe(new TestAriaComponent().clrAriaLabelExpanNodeText);
+        expect(this.clarityDirective.ariaLabelColapseNode).toBe(new TestAriaComponent().clrAriaLabelColapseNodeText);
+      });
+
+      it('should have aria-labelled-by value based on the tree-node id', function(this: Context) {
+        const expectedValue = `${this.clarityDirective.nodeId}-node-state ${this.clarityDirective.nodeId}`;
+        expect(this.clarityElement.querySelector('.clr-treenode-caret').getAttribute('aria-labelledby')).toBe(
+          expectedValue
+        );
       });
     });
 

@@ -117,5 +117,9 @@ export class I18nDemo extends ClarityDocComponent {
       role:
         'Used in an aria-live region. Makes up one part of a phrase that is read to screen reader users when the decade changes.',
     },
+
+    /* TreeView */
+    { key: 'treeViewExpandAriaLabel', role: 'TreeView: aria label for expanding node' },
+    { key: 'treeViewColapseAriaLabel', role: 'TreeView: aria label for colapsing node' },
   ];
 }

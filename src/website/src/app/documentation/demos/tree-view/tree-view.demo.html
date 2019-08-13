@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+  ~ Copyright (c) 2016-2019 VMware, Inc. All Rights Reserved.
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
@@ -516,6 +516,32 @@
                         Indicates to the tree that children nodes should be lazy-loaded
                     </td>
                 </tr>
+                <tr>
+                    <td class="left">
+                        <b>[(clrAriaLabelExpand)]</b>
+                        <div class="hidden-sm-up">Type: string</div>
+                        <div class="hidden-sm-up">Default: Expand</div>
+                    </td>
+                    <td class="hidden-xs-down">string</td>
+                    <td class="hidden-xs-down">Expand</td>
+                    <td class="left">
+                        Global aria label for expanding tree node
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="left">
+                        <b>[(clrAriaLabelColapse)]</b>
+                        <div class="hidden-sm-up">Type: string</div>
+                        <div class="hidden-sm-up">Default: Colapse</div>
+                    </td>
+                    <td class="hidden-xs-down">string</td>
+                    <td class="hidden-xs-down">Expand</td>
+                    <td class="left">
+                        Global aria label for colapsing tree node
+                    </td>
+                </tr>
+               
                 </tbody>
             </table>
 
@@ -564,6 +590,32 @@
                     <td class="hidden-xs-down">undefined</td>
                     <td class="left">
                         Forces a node to be expandable or node, regardless of its children.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="left">
+                        <b>[clrAriaLabelExpandNode]</b>
+                        <div class="hidden-sm-up">Type: string</div>
+                        <div class="hidden-sm-up">Default: "Expand"</div>
+                    </td>
+                    <td class="hidden-xs-down">string</td>
+                    <td class="hidden-xs-down">Expand</td>
+                    <td class="left">
+                        Aria Label for expanding tree node.
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="left">
+                        <b>[clrAriaLabelColapseNode]</b>
+                        <div class="hidden-sm-up">Type: string</div>
+                        <div class="hidden-sm-up">Default: "Colapse"</div>
+                    </td>
+                    <td class="hidden-xs-down">string</td>
+                    <td class="hidden-xs-down">"Colapse"</td>
+                    <td class="left">
+                        Aria Label for colapsing tree node.
                     </td>
                 </tr>
                 </tbody>

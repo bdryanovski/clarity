@@ -7,6 +7,7 @@ import { Injectable, Optional, SkipSelf, TemplateRef } from '@angular/core';
 import { RecursiveTreeNodeModel } from './models/recursive-tree-node.model';
 import { ClrRecursiveForOfContext } from './recursive-for-of';
 import { Subject } from 'rxjs';
+import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 
 @Injectable()
 export class TreeFeaturesService<T> {
@@ -17,6 +18,8 @@ export class TreeFeaturesService<T> {
     root: RecursiveTreeNodeModel<T>[];
   };
   childrenFetched: Subject<void> = new Subject();
+  ariaLabelExpandGlobal: string = new ClrCommonStringsService().keys.treeViewExpandAriaLabel;
+  ariaLabelColapseGlobal: string = new ClrCommonStringsService().keys.treeViewColapseAriaLabel;
 }
 
 export function treeFeaturesFactory<T>(existing: TreeFeaturesService<T>) {

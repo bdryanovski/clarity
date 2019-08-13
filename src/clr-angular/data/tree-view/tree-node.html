@@ -10,6 +10,7 @@
     type="button"
     class="clr-treenode-caret"
     (click)="expandService.toggle()"
+    [attr.aria-labelledby]="ariaLabelledByButton"
     [attr.aria-expanded]="expandService.expanded">
     <clr-icon
       class="clr-treenode-caret-icon"
@@ -26,6 +27,9 @@
            [indeterminate]="_model.selected.value === STATES.INDETERMINATE"
            (change)="_model.toggleSelection(featuresService.eager)">
     <label for="{{nodeId}}-check" class="clr-control-label"></label>
+  </div>
+  <div id="{{nodeId}}-node-state" class="clr-sr-only">
+    {{ expandService.expanded ? ariaLabelColapseNode : ariaLabelExpandNode }}
   </div>
   <div class="clr-treenode-content" [id]="nodeId">
     <ng-content></ng-content>

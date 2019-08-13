@@ -284,6 +284,8 @@ export interface ClrCommonStrings {
     sortColumn?: string;
     success?: string;
     totalPages?: string;
+    treeViewColapseAriaLabel?: string;
+    treeViewExpandAriaLabel?: string;
     warning?: string;
 }
 
@@ -1304,6 +1306,8 @@ export declare class ClrTooltipTrigger {
 }
 
 export declare class ClrTree<T> {
+    clrAriaLabelColapse: string;
+    clrAriaLabelExpand: string;
     featuresService: TreeFeaturesService<T>;
     lazy: boolean;
     constructor(featuresService: TreeFeaturesService<T>);
@@ -1312,6 +1316,9 @@ export declare class ClrTree<T> {
 export declare class ClrTreeNode<T> implements OnInit, OnDestroy {
     STATES: typeof ClrSelectedState;
     _model: TreeNodeModel<T>;
+    ariaLabelColapseNode: string;
+    ariaLabelExpandNode: string;
+    ariaLabelledByButton: string;
     readonly ariaSelected: boolean;
     commonStrings: ClrCommonStringsService;
     expandService: IfExpandService;

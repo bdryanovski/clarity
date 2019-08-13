@@ -51,6 +51,7 @@ import { TREE_FEATURES_PROVIDER, TreeFeaturesService } from './tree-features.ser
 export class ClrTreeNode<T> implements OnInit, OnDestroy {
   STATES = ClrSelectedState;
   private skipEmitChange = false;
+  public ariaLabelledByButton: string;
 
   constructor(
     @Inject(UNIQUE_ID) public nodeId: string,
@@ -71,6 +72,12 @@ export class ClrTreeNode<T> implements OnInit, OnDestroy {
       // Force cast for now, not sure how to tie the correct type here to featuresService.recursion
       this._model = new DeclarativeTreeNodeModel(parent ? <DeclarativeTreeNodeModel<T>>parent._model : null);
     }
+
+    /**
+     * Aria labelledby will require ids to create the label
+     * it's done here cause in the template is hard to read and maintain.
+     */
+    this.ariaLabelledByButton = `${this.nodeId}-node-state ${nodeId}`;
   }
 
   _model: TreeNodeModel<T>;
@@ -139,6 +146,10 @@ export class ClrTreeNode<T> implements OnInit, OnDestroy {
   set expanded(value: boolean) {
     this.expandService.expanded = value;
   }
+
+  /* Aria */
+  @Input('clrAriaLabelExpandNode') ariaLabelExpandNode: string = this.featuresService.ariaLabelExpandGlobal;
+  @Input('clrAriaLabelColapseNode') ariaLabelColapseNode: string = this.featuresService.ariaLabelColapseGlobal;
 
   @Output('clrExpandedChange') expandedChange = new EventEmitter<boolean>();
 

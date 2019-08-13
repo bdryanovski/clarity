@@ -180,4 +180,9 @@ export interface ClrCommonStrings {
   daypickerSRCurrentMonthPhrase?: string;
   daypickerSRCurrentYearPhrase?: string;
   daypickerSRCurrentDecadePhrase?: string;
+  /**
+   * TreeView: Expand & Colapse aria labels
+   */
+  treeViewExpandAriaLabel?: string;
+  treeViewColapseAriaLabel?: string;
 }

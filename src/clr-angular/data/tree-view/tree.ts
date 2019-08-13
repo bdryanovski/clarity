@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2019 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -11,8 +11,10 @@ import { TREE_FEATURES_PROVIDER, TreeFeaturesService } from './tree-features.ser
   selector: 'clr-tree',
   template: `
     <ng-content></ng-content>
-    <clr-recursive-children *ngIf="featuresService.recursion"
-                            [children]="featuresService.recursion.root"></clr-recursive-children>
+    <clr-recursive-children 
+      *ngIf="featuresService.recursion"
+      [children]="featuresService.recursion.root"
+    ></clr-recursive-children>
   `,
   providers: [TREE_FEATURES_PROVIDER],
 })
@@ -24,5 +26,15 @@ export class ClrTree<T> {
   @Input('clrLazy')
   set lazy(value: boolean) {
     this.featuresService.eager = !value;
+  }
+
+  @Input('clrAriaLabelExpand')
+  set clrAriaLabelExpand(value: string) {
+    this.featuresService.ariaLabelExpandGlobal = value;
+  }
+
+  @Input('clrAriaLabelColapse')
+  set clrAriaLabelColapse(value: string) {
+    this.featuresService.ariaLabelColapseGlobal = value;
   }
 }
