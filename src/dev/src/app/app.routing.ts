@@ -130,4 +130,13 @@ export const APP_ROUTES: Routes = [
   { path: 'wizard', loadChildren: () => import('./wizard/wizard.demo.module').then(m => m.WizardDemoModule) },
 ];
 
-export const ROUTING: ModuleWithProviders = RouterModule.forRoot(APP_ROUTES);
+export const WC_ROUTES: Routes = [
+  { path: '', component: LandingComponent },
+  {
+    path: 'wc/circle-progress',
+    loadChildren: () =>
+      import('./web-component/circle-progress/wc-circle-progress.demo.module').then(m => m.WcCircleProgressDemoModule),
+  },
+];
+
+export const ROUTING: ModuleWithProviders = RouterModule.forRoot([...APP_ROUTES, ...WC_ROUTES]);

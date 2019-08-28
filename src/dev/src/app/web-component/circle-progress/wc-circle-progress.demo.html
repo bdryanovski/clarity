@@ -1,0 +1,74 @@
+<h1>Web Component</h1>
+
+<h3>Sizes</h3>
+
+<h4>Medium: 36px (default)</h4>
+<clr-wc-circular-progress [progress]="pctComplete"></clr-wc-circular-progress>
+
+<h4>Small: 24px</h4>
+<clr-wc-circular-progress [size]="24" [progress]="pctComplete"></clr-wc-circular-progress>
+
+<h4>Mini: 18px</h4>
+<clr-wc-circular-progress [size]="18" [progress]="pctComplete"></clr-wc-circular-progress>
+
+<h4>Custom: 72px</h4>
+<clr-wc-circular-progress [size]="72" [progress]="pctComplete"></clr-wc-circular-progress>
+
+<h4>In cards</h4>
+
+<div class="clr-row">
+    <div class="clr-col-lg-5 clr-col-md-8 clr-col-12">
+        <div class="card">
+            <div class="card-header">
+                Header
+                <div class="card-header-icons">
+                    <clr-wc-circular-progress [size]="24" [progress]="pctComplete"></clr-wc-circular-progress>
+                </div>
+            </div>
+            <div class="card-block">
+                <div class="card-title">
+                    Block
+                </div>
+                <div class="card-text">
+                    ...
+                </div>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-sm btn-link">Footer Action 1</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h4>In Sidenav</h4>
+<div class="main-container" style="height: 500px">
+    <div class="content-container">
+        <nav class="sidenav">
+            <section class="sidenav-content">
+                <section class="nav-group">
+                    <input id="tabexample2" type="checkbox">
+                    <label for="tabexample2">Default Nav Element</label>
+                    <ul class="nav-list">
+                        <li><a class="nav-link">Link 1</a></li>
+                        <li><a class="nav-link">Link 2</a></li>
+                        <li><a class="nav-link active">Link 3 
+                            <clr-wc-circular-progress [size]="18" [progress]="pctComplete"></clr-wc-circular-progress>
+                        </a></li>
+                        <li><a class="nav-link">Link 4</a></li>
+                        <li><a class="nav-link">Link 5</a></li>
+                        <li><a class="nav-link">Link 6</a></li>
+                    </ul>
+                </section>
+            </section>
+        </nav>
+        <div class="content-area">
+            Content Area
+        </div>
+    </div>
+</div>
+
+<h1>Angular Wrapper</h1>
+
+<clr-circle-progress [clrProgress]="pctComplete"></clr-circle-progress>
+<clr-circle-progress clrSmall [clrProgress]="pctComplete"></clr-circle-progress>
+<clr-circle-progress clrMini [clrProgress]="pctComplete"></clr-circle-progress>

@@ -1,12 +1,12 @@
 /*
- * Copyright (c) 2016-2018 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2019 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 import { Component } from '@angular/core';
 import { Route } from '@angular/router';
 
-import { APP_ROUTES } from './app.routing';
+import { APP_ROUTES, WC_ROUTES } from './app.routing';
 
 @Component({
   selector: 'my-app-content-container',
@@ -16,6 +16,16 @@ import { APP_ROUTES } from './app.routing';
             </main>
             <nav class="sidenav" [clr-nav-level]="2">
                 <section class="sidenav-content">
+                    <section class="nav-group collapsible">
+                        <input id="tab0" type="checkbox">
+                        <label for="tab0">Web Component</label>
+                        <ul class="nav-list">
+                            <li *ngFor="let route of wcRoutes">
+                                <a *ngIf="route.path != ''" class="nav-link" [routerLink]="[route.path]"
+                                   [routerLinkActive]="['active']">{{route.path}}</a>
+                            </li>
+                        </ul>
+                    </section>
                     <section class="nav-group collapsible">
                         <input id="tab1" type="checkbox">
                         <label for="tab1">Clarity Navigation</label>
@@ -57,4 +67,5 @@ import { APP_ROUTES } from './app.routing';
 })
 export class AppContentContainerComponent {
   public routes: Route[] = APP_ROUTES;
+  public wcRoutes: Route[] = WC_ROUTES;
 }

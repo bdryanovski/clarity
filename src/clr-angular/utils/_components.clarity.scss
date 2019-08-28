@@ -97,6 +97,11 @@
 @import '../layout/vertical-nav/vertical-nav.clarity'; // depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity
 @import '../layout/nav/responsive-nav.clarity'; // depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity, layers.clarity
 
+// Circle Progress
+//Progress Circle
+//depends on variables.clarity, color.clarity,
+@import '../progress/circle-progress/circle-progress.clarity';
+
 //Progress Bars
 //depends on variables.clarity, helpers.clarity, color.clarity, cards.clarity
 @import '../progress/progress-bars/progress-bars.clarity';

@@ -6,6 +6,10 @@
 
 import { LitElement, html, css, property } from 'lit-element';
 
+const BACKGROUND_COLOR: string = 'hsl(201, 10%, 90%)';
+const PROGRESS_COLOR: string = 'hsl(201, 100%, 36%)';
+const DEFAULT_SIZE: number = 36;
+
 function polarToCartesian(centerX: number, centerY: number, radius: number, angleInDegrees: number) {
   const angleInRadians = (angleInDegrees - 90) * Math.PI / 180.0;
 
@@ -52,31 +56,34 @@ export class ClrWcCircularProgress extends LitElement {
   title = 'progress';
 
   @property({ type: Number })
-  pctComplete = 30;
+  progress = 0;
 
   @property({ type: String })
-  color = '#0079b8';
+  color = PROGRESS_COLOR;
+
+  @property({ type: Number })
+  size = DEFAULT_SIZE;
 
   static get styles() {
     return styles;
   }
 
   get path(): string {
-    return describeArc(18, 18, 16, 0, pctCompleteToRadians(this.pctComplete));
+    return describeArc(18, 18, 16, 0, pctCompleteToRadians(this.progress));
   }
 
   get backstrokeColor(): string {
-    return this.pctComplete > 99 ? this.color : '#eee';
+    return this.progress > 99 ? this.color : BACKGROUND_COLOR;
   }
 
   render() {
     return html`
-      <span class="clr-circular-progress-container">
+      <span class="clr-circular-progress-container" style="width: ${this.size}px; height: ${this.size}px;">
         <svg version="1.1" viewBox="0 0 36 36" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" focusable="false" role="img">
             <g stroke="${this.backstrokeColor}" stroke-width="3" fill="none">
                 <circle cx="18" cy="18" r="16"/>
             </g>
-            <g stroke="${this.color}" stroke-width="3" fill="none">
+            <g stroke="${this.color}" stroke-width="3" fill="none" stroke-linecap="round">
                 <path d = "${this.path}"/>
             </g>
         </svg>
