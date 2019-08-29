@@ -43,6 +43,20 @@ export const styles = css`
     width: 100%;
     height: 100%;
   }
+
+  .clr-circular-progress-container {
+    display: inline-grid;
+  }
+
+  .clr-circle-progress-svg {
+    border: 1px solidd red;
+  }
+
+  .clr-circle-progress-status {
+  }
+
+  .clr-circle-progress-label {
+  }
 `;
 
 function pctCompleteToRadians(pctComplete: number): number {
@@ -79,14 +93,24 @@ export class ClrWcCircularProgress extends LitElement {
   render() {
     return html`
       <span class="clr-circular-progress-container" style="width: ${this.size}px; height: ${this.size}px;">
-        <svg version="1.1" viewBox="0 0 36 36" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" focusable="false" role="img">
-            <g stroke="${this.backstrokeColor}" stroke-width="3" fill="none">
-                <circle cx="18" cy="18" r="16"/>
-            </g>
-            <g stroke="${this.color}" stroke-width="3" fill="none" stroke-linecap="round">
-                <path d = "${this.path}"/>
-            </g>
-        </svg>
+        <div class="clr-circle-progress-svg" >
+          <svg 
+            version="1.1" 
+            viewBox="0 0 36 36" 
+            preserveAspectRatio="xMidYMid meet" 
+            xmlns="http://www.w3.org/2000/svg" 
+            xmlns:xlink="http://www.w3.org/1999/xlink" 
+            focusable="false" 
+            role="img">
+              <g stroke="${this.backstrokeColor}" stroke-width="3" fill="none">
+                  <circle cx="18" cy="18" r="16"/>
+              </g>
+              <g stroke="${this.color}" stroke-width="3" fill="none" stroke-linecap="round">
+                  <path d = "${this.path}"/>
+              </g>
+          </svg>
+        </div>
+        <slot></slot>
       </span>
     `;
   }

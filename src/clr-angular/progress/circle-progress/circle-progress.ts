@@ -13,7 +13,11 @@ const MINI = 18;
 @Component({
   selector: 'clr-circle-progress',
   template: `
-    <clr-wc-circular-progress [size]="size" [progress]="clrProgress"></clr-wc-circular-progress>
+    <clr-wc-circular-progress [size]="size" [progress]="clrProgress">
+      <ng-content select=".clr-circle-progress-status"></ng-content>
+      <ng-content select=".clr-circle-progress-label"></ng-content>
+    </clr-wc-circular-progress>
+
   `,
   host: {
     '[attr.aria-live]': 'setAriaLive',

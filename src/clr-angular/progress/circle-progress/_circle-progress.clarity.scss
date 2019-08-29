@@ -5,22 +5,17 @@
 // @TODO I may not need them anymore!
 
 @include exports('circle-progress.clarity') {
-  .clr-circle-progress {
+  .clr-circular-progress-container {
     display: inline-block;
+  }
 
-    &.clr-circle-progress-md-size {
-      width: $clr-circle-progress-md-size;
-      height: $clr-circle-progress-md-size;
-    }
+  .clr-circle-progress-svg {
+    border: 1px solidd red;
+  }
 
-    &.clr-circle-progress-sm-size {
-      width: $clr-circle-progress-sm-size;
-      height: $clr-circle-progress-sm-size;
-    }
+  .clr-circle-progress-status {
+  }
 
-    &.clr-circle-progress-mini-size {
-      width: $clr-circle-progress-mini-size;
-      height: $clr-circle-progress-mini-size;
-    }
+  .clr-circle-progress-label {
   }
 }

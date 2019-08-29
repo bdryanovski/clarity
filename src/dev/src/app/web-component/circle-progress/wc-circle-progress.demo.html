@@ -14,6 +14,8 @@
 <h4>Custom: 72px</h4>
 <clr-wc-circular-progress [size]="72" [progress]="pctComplete"></clr-wc-circular-progress>
 
+<h3>Used in components</h3>
+
 <h4>In cards</h4>
 
 <div class="clr-row">
@@ -40,8 +42,26 @@
     </div>
 </div>
 
+<h4>In Vertical nav</h4>
+<div class="main-container" style="height: 200px">
+    <div class="content-container">
+        <clr-vertical-nav class="clr-vertical-nav ng-star-inserted">
+            <div class="nav-content">
+                <a  class="nav-link" clrverticalnavlink="" href="javascript://" rel="noopener" target="_blank">
+                    <span class="nav-text">Snorlax</span>
+                </a>
+                <a class="active nav-link" clrverticalnavlink="" href="javascript://" rel="noopener" target="_blank">
+                    <span class="nav-text">Jigglypuff</span>
+                </a>
+            </div>
+        </clr-vertical-nav>
+        <div class="content-area">
+        </div>
+    </div>
+</div>
+
 <h4>In Sidenav</h4>
-<div class="main-container" style="height: 500px">
+<div class="main-container" style="height: 200px">
     <div class="content-container">
         <nav class="sidenav">
             <section class="sidenav-content">
@@ -54,9 +74,7 @@
                         <li><a class="nav-link active">Link 3 
                             <clr-wc-circular-progress [size]="18" [progress]="pctComplete"></clr-wc-circular-progress>
                         </a></li>
-                        <li><a class="nav-link">Link 4</a></li>
-                        <li><a class="nav-link">Link 5</a></li>
-                        <li><a class="nav-link">Link 6</a></li>
+                
                     </ul>
                 </section>
             </section>
@@ -69,6 +87,23 @@
 
 <h1>Angular Wrapper</h1>
 
+<h4>Basic component without any label</h4>
 <clr-circle-progress [clrProgress]="pctComplete"></clr-circle-progress>
 <clr-circle-progress clrSmall [clrProgress]="pctComplete"></clr-circle-progress>
 <clr-circle-progress clrMini [clrProgress]="pctComplete"></clr-circle-progress>
+
+<h4>Component with label</h4>
+<clr-circle-progress [clrProgress]="pctComplete">
+    <div class="clr-circle-progress-status">progress</div>
+    <div class="clr-circle-progress-status">subtext</div>
+</clr-circle-progress>
+
+<clr-circle-progress clrSmall [clrProgress]="pctComplete">
+    <div class="clr-circle-progress-status">progress</div>
+    <div class="clr-circle-progress-status">subtext</div>
+</clr-circle-progress>
+
+<clr-circle-progress clrMini [clrProgress]="pctComplete">
+    <div class="clr-circle-progress-status">progress</div>
+    <div class="clr-circle-progress-status">subtext</div>
+</clr-circle-progress>
