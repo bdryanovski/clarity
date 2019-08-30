@@ -185,4 +185,8 @@ export interface ClrCommonStrings {
    */
   treeViewExpandAriaLabel?: string;
   treeViewColapseAriaLabel?: string;
+  /**
+   * Stack View: Record has changed
+   */
+  stackViewChanged?: string;
 }

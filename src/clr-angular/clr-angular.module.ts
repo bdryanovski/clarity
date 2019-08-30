@@ -15,12 +15,14 @@ import { ClrLayoutModule } from './layout/layout.module';
 import { ClrModalModule } from './modal/modal.module';
 import { ClrPopoverModule } from './popover/popover.module';
 import { ClrConditionalModule } from './utils/conditional/conditional.module';
+import { ClrFocusOnViewInitModule } from './utils/focus/focus-on-view-init/focus-on-view-init.module';
 import { ClrFocusTrapModule } from './utils/focus-trap/focus-trap.module';
 import { ClrLoadingModule } from './utils/loading/loading.module';
 import { ClrWizardModule } from './wizard/wizard.module';
 import { ClrStepperModule } from './accordion/stepper/stepper.module';
 import { ClrSpinnerModule } from './progress/spinner/spinner.module';
 import { ClrProgressBarModule } from './progress/progress-bars/progress-bar.module';
+import { ClrPopoverModuleNext } from './utils/popover/popover.module';
 
 @NgModule({
   exports: [
@@ -31,6 +33,7 @@ import { ClrProgressBarModule } from './progress/progress-bars/progress-bar.modu
     ClrLoadingModule,
     ClrConditionalModule,
     ClrFocusTrapModule,
+    ClrFocusOnViewInitModule,
     ClrButtonModule,
     ClrFormsModule,
     ClrLayoutModule,
@@ -40,6 +43,7 @@ import { ClrProgressBarModule } from './progress/progress-bars/progress-bar.modu
     ClrStepperModule,
     ClrSpinnerModule,
     ClrProgressBarModule,
+    ClrPopoverModuleNext,
   ],
 })
 export class ClarityModule {}

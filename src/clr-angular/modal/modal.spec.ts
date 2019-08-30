@@ -4,6 +4,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 import { Component, ViewChild } from '@angular/core';
+import { AnimationEvent } from '@angular/animations';
+
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -147,6 +149,29 @@ describe('Modal', () => {
   );
 
   it(
+    'should not emit clrModalOpenChange - animation will do that for us',
+    fakeAsync(() => {
+      /**
+       * Needed just to mock the event so I could enter the `if` statement.
+       */
+      const fakeAnimationEvent: AnimationEvent = {
+        fromState: '',
+        toState: 'void',
+        totalTime: 0,
+        phaseName: '',
+        element: {},
+        triggerName: '',
+        disabled: false,
+      };
+
+      spyOn(getModalInstance(fixture)._openChanged, 'emit');
+      getModalInstance(fixture).close();
+      getModalInstance(fixture).fadeDone(fakeAnimationEvent);
+      expect(getModalInstance(fixture)._openChanged.emit).toHaveBeenCalledTimes(1);
+    })
+  );
+
+  it(
     'should not close when already closed',
     fakeAsync(() => {
       fixture.componentInstance.opened = false;
@@ -182,6 +207,13 @@ describe('Modal', () => {
       // expect(fixture.componentInstance.opened).toBe(true);
       tick();
       expect(fixture.componentInstance.opened).toBe(false);
+    })
+  );
+
+  it(
+    'focuses on the title when opened',
+    fakeAsync(() => {
+      expect(document.activeElement).toEqual(fixture.nativeElement.querySelector('.modal-title-wrapper'));
     })
   );
 

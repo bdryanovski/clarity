@@ -35,6 +35,9 @@
 //Popover
 @import '../popover/common/popover.clarity';
 
+// Smart Popover
+@import 'popover/popover-popover.clarity';
+
 //Icons & Images
 @import '../image/icons.clarity'; // depends on variables.clarity
 @import '../image/images.clarity'; // depends on variables.clarity, mixins.clarity, icons.clarity
@@ -87,6 +90,7 @@
 
 //Nav
 @import '../layout/nav/header.clarity'; // depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity, layers.clarity
+@import '../layout/nav/links.clarity'; // depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity
 @import '../layout/nav/nav.clarity'; // depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity, layers.clarity
 @import '../layout/nav/subnav.clarity'; // depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity, layers.clarity
 @import '../layout/nav/sidenav.clarity'; // depends on variables.clarity, mixins.clarity, helpers.clarity, color.clarity
@@ -162,3 +166,6 @@
 
 // Stepper
 @import '../accordion/accordion.clarity';
+
+// Timeline
+@import '../timeline/timeline.clarity';

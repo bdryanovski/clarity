@@ -121,5 +121,8 @@ export class I18nDemo extends ClarityDocComponent {
     /* TreeView */
     { key: 'treeViewExpandAriaLabel', role: 'TreeView: aria label for expanding node' },
     { key: 'treeViewColapseAriaLabel', role: 'TreeView: aria label for colapsing node' },
+
+    /* StackView */
+    { key: 'stackViewChanged', role: 'Stack View: describes a particular stack block has changed' },
   ];
 }
