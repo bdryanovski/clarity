@@ -67,3 +67,5 @@ auto-generated-routes.ts
 # cypress
 cypress/screenshots
 cypress/videos
+.favorites.json
+.favorites.json

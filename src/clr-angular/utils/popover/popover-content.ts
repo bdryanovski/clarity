@@ -45,6 +45,11 @@ export class ClrPopoverContent implements AfterContentChecked, OnDestroy {
     this.smartEventsService.outsideClickClose = !!clickToClose;
   }
 
+  @Input('clrPopoverContentOpenOnHover')
+  set openOnHover(openOnHover) {
+    this.smartEventsService.openOnHover = !!openOnHover;
+  }
+
   @Input('clrPopoverContentScrollToClose')
   set scrollToClose(scrollToClose) {
     this.smartEventsService.scrollToClose = !!scrollToClose;
