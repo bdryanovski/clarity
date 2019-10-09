@@ -33,16 +33,6 @@ const POSITIONS: string[] = ['left', 'right', 'top-left', 'top-right', 'bottom-l
   template: `
     <ng-content></ng-content>
     `,
-  /*
-  styles: [
-    `
-    .tooltip-extend {
-      visibility: visible;
-      position: absolute !important;
-      opacity: 1
-    }
-    `
-  ], */
   host: {
     '[class.tooltip-content]': 'true',
     '[attr.role]': '"tooltip"',
