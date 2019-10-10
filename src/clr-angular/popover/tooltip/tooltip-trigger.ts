@@ -4,11 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, HostListener } from '@angular/core';
-import { IfOpenService } from '../../utils/conditional/if-open.service';
-import { TooltipIdService } from './providers/tooltip-id.service';
-import { Subscription } from 'rxjs';
-
+import { Directive, HostListener, ChangeDetectorRef } from '@angular/core';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 
 @Directive({
@@ -21,33 +17,28 @@ import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-t
   },
 })
 export class ClrTooltipTrigger {
-  public ariaDescribedBy;
+  constructor(private smartToggleService: ClrPopoverToggleService, private cdr: ChangeDetectorRef) {}
 
-  private subs: Subscription[] = [];
-  constructor(
-    private ifOpenService: IfOpenService,
-    private tooltipIdService: TooltipIdService,
-    private smartToggleService: ClrPopoverToggleService
-  ) {
-    // The aria-described by comes from the id of content. It
-    this.subs.push(this.tooltipIdService.id.subscribe(tooltipId => (this.ariaDescribedBy = tooltipId)));
+  private _ariaDescribedBy: string = '';
+  public set ariaDescribedBy(value: string) {
+    if (this._ariaDescribedBy !== value) {
+      this._ariaDescribedBy = value;
+      this.cdr.detectChanges();
+    }
+  }
+  public get ariaDescribedBy() {
+    return this._ariaDescribedBy;
   }
 
   @HostListener('mouseenter')
   @HostListener('focus')
   showTooltip(): void {
     this.smartToggleService.open = true;
-    //this.ifOpenService.open = true;
   }
 
   @HostListener('mouseleave')
   @HostListener('blur')
   hideTooltip(): void {
-    //this.smartToggleService.open = false;
-    //this.ifOpenService.open = false;
-  }
-
-  ngOnDestroy() {
-    this.subs.forEach(sub => sub.unsubscribe());
+    this.smartToggleService.open = false;
   }
 }

@@ -32,7 +32,7 @@ import { findPositionString, findPositionObject, validPosition } from '../positi
       </div>
       <div
         [id]="popoverId"
-        *clrPopoverContent="openState at smartPosition; openOnHover: _openOnHover; outsideClickToClose: _outsideClickToClose; scrollToClose: _scrollToClose;">
+        *clrPopoverContent="openState at smartPosition; outsideClickToClose: _outsideClickToClose; scrollToClose: _scrollToClose;">
           <ng-content></ng-content>
       </div>
   `,
@@ -44,7 +44,6 @@ export class ClrPopoverAdapter implements OnInit, OnDestroy {
 
   private _outsideClickToClose: boolean = true;
   private _scrollToClose: boolean = true;
-  private _openOnHover: boolean = false;
 
   constructor(
     @Inject(UNIQUE_ID) id: string,
@@ -85,13 +84,8 @@ export class ClrPopoverAdapter implements OnInit, OnDestroy {
     this._scrollToClose = !!state;
   }
 
-  @Input('clrOpenOnHover')
-  set clrOpenOnHover(state: boolean) {
-    this._openOnHover = !!state;
-  }
-
   // The initially requested position.
-  private _position: string = 'right-middle';
+  private _position: string;
   @Input('clrPosition')
   set position(position: string) {
     if (validPosition(position)) {
@@ -105,6 +99,7 @@ export class ClrPopoverAdapter implements OnInit, OnDestroy {
     return this._position;
   }
 
+  @Input('clrOpenState')
   set openState(state: boolean) {
     this.toggleService.open = state;
   }

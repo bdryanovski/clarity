@@ -17,9 +17,7 @@ import { DOCUMENT } from '@angular/common';
 export class ClrPopoverEventsService implements OnDestroy {
   public outsideClickClose = true;
   public scrollToClose = true;
-  public openOnHover = false;
   private documentClickListener: () => void;
-  private documentHoverListener: () => void;
   public ignoredEvent: any;
   private subscriptions: Subscription[] = [];
 
@@ -30,9 +28,6 @@ export class ClrPopoverEventsService implements OnDestroy {
   ) {
     this.subscriptions.push(
       smartOpenService.openChange.subscribe(open => {
-        if (this.openOnHover) {
-          this.addHoverListener();
-        }
         if (open) {
           this.addEscapeListener();
           this.addClickListener();
@@ -118,35 +113,6 @@ export class ClrPopoverEventsService implements OnDestroy {
       if (this.documentClickListener) {
         this.documentClickListener();
         delete this.documentClickListener;
-      }
-    }
-  }
-
-  public addHoverListener() {
-    if (this.openOnHover) {
-      console.log('enable openOnHover');
-      this.documentHoverListener = this.renderer.listen(this.document, 'mouseenter', (event: MouseEvent) => {
-        console.log('hover event', event);
-        if (event === this.ignoredEvent) {
-          // Here we ignore the opening click event (w/o this content opens and immediately closes.
-          delete this.ignoredEvent;
-          this.smartOpenService.open = true;
-        } else {
-          this.smartOpenService.open = false;
-          // Rather than a complex change to the focus trap I put focus on the element that was clicked
-          const clickedElement: HTMLElement = <HTMLElement>event.target;
-          clickedElement.focus();
-        }
-      });
-    }
-  }
-
-  public removeHoverListener() {
-    if (this.openOnHover) {
-      delete this.ignoredEvent;
-      if (this.documentHoverListener) {
-        this.documentHoverListener();
-        delete this.documentHoverListener;
       }
     }
   }

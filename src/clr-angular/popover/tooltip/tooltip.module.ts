@@ -14,13 +14,14 @@ import { ClrCommonPopoverModule } from '../common/popover.module';
 import { ClrTooltip } from './tooltip';
 import { ClrTooltipContent } from './tooltip-content';
 import { ClrTooltipTrigger } from './tooltip-trigger';
+import { ClrPopoverAdapterModule } from '../../utils/popover/adapter/popover-adapter.module';
 
 import { ClrPopoverModuleNext } from '../../utils/popover/popover.module';
 
 export const CLR_TOOLTIP_DIRECTIVES: Type<any>[] = [ClrTooltip, ClrTooltipTrigger, ClrTooltipContent];
 
 @NgModule({
-  imports: [CommonModule, ClrCommonPopoverModule, ClrPopoverModuleNext],
+  imports: [CommonModule, ClrCommonPopoverModule, ClrPopoverAdapterModule, ClrPopoverModuleNext],
   declarations: [CLR_TOOLTIP_DIRECTIVES],
   exports: [CLR_TOOLTIP_DIRECTIVES, ClrConditionalModule, ClrIconModule],
 })

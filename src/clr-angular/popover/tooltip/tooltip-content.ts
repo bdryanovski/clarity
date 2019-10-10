@@ -16,7 +16,6 @@ import {
 } from '@angular/core';
 import { AbstractPopover } from '../common/abstract-popover';
 import { UNIQUE_ID } from '../../utils/id-generator/id-generator.service';
-import { TooltipIdService } from './providers/tooltip-id.service';
 import { IfOpenService } from '../../utils/conditional/if-open.service';
 
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
@@ -49,7 +48,6 @@ export class ClrTooltipContent extends AbstractPopover implements OnInit, OnDest
     injector: Injector,
     parentHost: ElementRef,
     @Inject(UNIQUE_ID) public popoverId: string,
-    private tooltipIdService: TooltipIdService,
     private smartToggleService: ClrPopoverToggleService,
     @Optional() private ifOpen: IfOpenService,
     private cdr: ChangeDetectorRef
@@ -86,7 +84,6 @@ export class ClrTooltipContent extends AbstractPopover implements OnInit, OnDest
   }
 
   finalizePosition(position: string) {
-    console.log('Require update of positions new ', position, ' old ', this.position);
     if (position !== this.position) {
       this._position = position;
       this.cdr.detectChanges();
@@ -107,7 +104,6 @@ export class ClrTooltipContent extends AbstractPopover implements OnInit, OnDest
 
   private updateId(id: string) {
     this._id = id;
-    this.tooltipIdService.updateId(id);
   }
 
   // POSITION
@@ -117,15 +113,11 @@ export class ClrTooltipContent extends AbstractPopover implements OnInit, OnDest
   set position(position: string) {
     this.renderer.removeClass(this.el.nativeElement, 'tooltip-' + this.position);
 
-    console.log('clrPosition before ', this._position);
-
     if (validPosition(position)) {
       this._position = position;
     } else {
       this._position = 'right';
     }
-
-    console.log('clrPosition after', this._position);
 
     this.renderer.addClass(this.el.nativeElement, 'tooltip-' + this._position);
   }
