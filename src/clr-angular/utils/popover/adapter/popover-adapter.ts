@@ -63,6 +63,8 @@ export class ClrPopoverAdapter implements OnInit, OnDestroy {
         })
       );
     }
+    // Listen for new position and propagate to outside component with the help
+    // of clrSmartPositionReady
     this.subs.push(
       this.positionService.smartPosition.subscribe(finalPosition => {
         this._smartPositionReady.next(findPositionString(finalPosition));
@@ -84,15 +86,18 @@ export class ClrPopoverAdapter implements OnInit, OnDestroy {
     this._scrollToClose = !!state;
   }
 
+  @Input('clrDefaultPosition') defaultPosition: string = 'right-middle';
+
   // The initially requested position.
   private _position: string;
   @Input('clrPosition')
   set position(position: string) {
     if (validPosition(position)) {
       this._position = position;
-    } else {
-      this._position = 'right-middle';
+      return;
     }
+
+    this._position = this.defaultPosition;
   }
 
   get position() {

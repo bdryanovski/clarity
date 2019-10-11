@@ -86,6 +86,18 @@ export const SIMPLE_TO_SMART_POSITIONS: { [input: string]: ClrPopoverPosition } 
     anchor: ClrAlignment.CENTER,
     content: ClrAlignment.END,
   },
+  left: {
+    axis: ClrAxis.HORIZONTAL,
+    side: ClrSide.BEFORE,
+    anchor: ClrAlignment.CENTER,
+    content: ClrAlignment.END,
+  },
+  right: {
+    axis: ClrAxis.VERTICAL,
+    side: ClrSide.AFTER,
+    anchor: ClrAlignment.CENTER,
+    content: ClrAlignment.END,
+  },
 };
 
 // Put the forward arg here but it is only needed when nudging content or anchors.

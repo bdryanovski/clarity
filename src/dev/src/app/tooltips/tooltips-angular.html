@@ -56,8 +56,7 @@
 <div class="clr-row">
     <div class="clr-col-4 clr-example squeeze example-center">
         <clr-tooltip>
-            <clr-icon title="Tooltip icon" clrTooltipTrigger shape="info-standard" size="24" aria-label="blank id string"></clr-icon>
-            Top left
+            <span clrTooltipTrigger>Top left</span>
             <clr-tooltip-content [id]="blankStringId" clrPosition="top-left" clrSize="md">
                 <span>Top left {{tooltipInput.value}}</span>
             </clr-tooltip-content>
@@ -65,8 +64,7 @@
     </div>
     <div class="clr-col-4 clr-example squeeze example-center">
         <clr-tooltip>
-            <clr-icon title="Tooltip icon" clrTooltipTrigger shape="info-standard" size="24" aria-label="blank id string"></clr-icon>
-            Left
+            <span clrTooltipTrigger>Left</span>
             <clr-tooltip-content [id]="blankStringId" clrPosition="left" clrSize="md">
                 <span>Left {{tooltipInput.value}}</span>
             </clr-tooltip-content>
@@ -74,8 +72,8 @@
     </div>
     <div class="clr-col-4 clr-example squeeze example-center">
         <clr-tooltip>
-            <clr-icon title="Tooltip icon" clrTooltipTrigger shape="info-standard" size="24" aria-label="blank id string"></clr-icon>
-            Top right
+            <span clrTooltipTrigger>Top right</span>
+
             <clr-tooltip-content [id]="blankStringId" clrPosition="top-right" clrSize="md">
                 <span>Top right {{tooltipInput.value}}</span>
             </clr-tooltip-content>
@@ -85,8 +83,7 @@
 <div class="clr-row">
     <div class="clr-col-4 clr-example squeeze example-center">
         <clr-tooltip>
-            <clr-icon title="Tooltip icon" clrTooltipTrigger shape="info-standard" size="24" aria-label="blank id string"></clr-icon>
-            Bottom left
+            <span clrTooltipTrigger>Bottom left</span>
             <clr-tooltip-content [id]="blankStringId" clrPosition="bottom-left" clrSize="md">
                 <span>Bottom left {{tooltipInput.value}}</span>
             </clr-tooltip-content>
@@ -94,8 +91,7 @@
     </div>
     <div class="clr-col-4 clr-example squeeze example-center">
         <clr-tooltip>
-            <clr-icon title="Tooltip icon" clrTooltipTrigger shape="info-standard" size="24" aria-label="blank id string"></clr-icon>
-            Right
+            <span clrTooltipTrigger>Right</span>
             <clr-tooltip-content [id]="blankStringId" clrPosition="right" clrSize="md">
                 <span>Right {{tooltipInput.value}}</span>
             </clr-tooltip-content>
@@ -103,8 +99,7 @@
     </div>
     <div class="clr-col-4 clr-example squeeze example-center">
         <clr-tooltip>
-            <clr-icon title="Tooltip icon" clrTooltipTrigger shape="info-standard" size="24" aria-label="blank id string"></clr-icon>
-            Bottom right
+            <span clrTooltipTrigger>Bottom right</span>
             <clr-tooltip-content [id]="blankStringId" clrPosition="bottom-right" clrSize="md">
                 <span>Bottom right {{tooltipInput.value}}</span>
             </clr-tooltip-content>
@@ -119,7 +114,7 @@
             <clr-icon shape="info-standard" size="24"></clr-icon>
         </button>
         <ng-container *ngIf="true">
-            <clr-tooltip-content clrSize="lg">
+            <clr-tooltip-content clrPosition="bottom-right" clrSize="lg">
                 {{tooltipInput.value}}
             </clr-tooltip-content>
         </ng-container>
@@ -135,7 +130,7 @@
                 <button type="button" clrDropdownItem clrTooltipTrigger>
                     Option One
                 </button>
-                <clr-tooltip-content [clrSize]="'lg'">
+                <clr-tooltip-content  clrPosition="bottom-right" [clrSize]="'lg'">
                     {{tooltipInput.value}}
                 </clr-tooltip-content>
             </clr-tooltip>

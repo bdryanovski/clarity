@@ -3,7 +3,7 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-import { Component, ElementRef, ContentChild, ViewChild } from '@angular/core';
+import { Component, ElementRef, ContentChild } from '@angular/core';
 import { UNIQUE_ID_PROVIDER } from '../../utils/id-generator/id-generator.service';
 
 // @TODO maybe won't need it
@@ -14,11 +14,10 @@ import { POPOVER_HOST_ANCHOR } from '../common/popover-host-anchor.token';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
 import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
-import { ClrPopoverAdapter } from '../../utils/popover/adapter/popover-adapter';
 import { ClrTooltipContent } from './tooltip-content';
-import { ClrTooltipTrigger } from './tooltip-trigger';
 
-const DEFAULT_POSITION = 'top-right';
+import { TooltipSyncService } from './providers/tooltip-sync.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'clr-tooltip',
@@ -26,7 +25,8 @@ const DEFAULT_POSITION = 'top-right';
     <clr-popover-adapter
       [clrPosition]="position"
       [clrOpenState]="openState"
-      (clrSmartPositionReady)="updatedPosition($event)"
+      [clrDefaultPosition]="'right-top'"
+      (clrSmartPositionReady)="requestToUpdatePosition($event)"
       >
         <ng-container clrAnchorPoint>
             <ng-content select="[clrTooltipTrigger]"></ng-content>
@@ -37,39 +37,32 @@ const DEFAULT_POSITION = 'top-right';
     </clr-popover-adapter>
   `,
   providers: [
-    // Smart Popover
     ClrPopoverToggleService,
     ClrPopoverEventsService,
     ClrPopoverPositionService,
+    TooltipSyncService,
     UNIQUE_ID_PROVIDER,
-    // @TODO remove lines below later
     IfOpenService,
     { provide: POPOVER_HOST_ANCHOR, useExisting: ElementRef },
   ],
 })
 export class ClrTooltip {
-  public position: string = DEFAULT_POSITION;
+  public position: string;
   private openState: boolean = false;
+  private subscriptions: Subscription[] = [];
 
-  constructor(private smartToggleService: ClrPopoverToggleService) {
-    this.smartToggleService.openChange.subscribe(change => {
-      this.openState = change;
-    });
+  constructor(private smartToggleService: ClrPopoverToggleService, private tooltipSync: TooltipSyncService) {}
+
+  ngOnInit() {
+    this.subscriptions.push(
+      this.smartToggleService.openChange.subscribe(change => {
+        this.openState = change;
+      })
+    );
   }
 
-  @ViewChild(ClrPopoverAdapter, { static: false })
-  popoverAdapter: ClrPopoverAdapter;
-
-  @ContentChild(ClrTooltipTrigger, { static: false })
-  tooltipTrigger: ClrTooltipTrigger;
-
-  ngAfterViewInit() {
-    if (![undefined, ''].includes(this.tooltipContent.id)) {
-      this.tooltipTrigger.ariaDescribedBy = this.tooltipContent.id;
-    }
-    if (this.tooltipContent && this.tooltipContent.position !== undefined) {
-      this.position = this.tooltipContent.position;
-    }
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   private _content: ClrTooltipContent;
@@ -81,13 +74,14 @@ export class ClrTooltip {
     this._content = content;
     this.position = this._content.position;
   }
+
   get tooltipContent() {
     return this._content;
   }
 
-  updatedPosition(position: string) {
-    if (this.tooltipContent && position !== null) {
-      this.tooltipContent.finalizePosition(position);
+  requestToUpdatePosition(position: string) {
+    if (position !== null && position !== undefined) {
+      this.tooltipContent.updatePosition(position);
     }
   }
 }

@@ -19,6 +19,8 @@ import { UNIQUE_ID } from '../../utils/id-generator/id-generator.service';
 import { IfOpenService } from '../../utils/conditional/if-open.service';
 
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { TooltipSyncService } from './providers/tooltip-sync.service';
+
 import { Subscription } from 'rxjs';
 
 import { validPosition } from '../../utils/popover/position-operators';
@@ -27,6 +29,33 @@ const SIZES: string[] = ['xs', 'sm', 'md', 'lg'];
 
 // TODO remove this just keep it until all positions are validated
 const POSITIONS: string[] = ['left', 'right', 'top-left', 'top-right', 'bottom-left', 'bottom-right'];
+
+// TODO this is not valid all the time
+const MAP_POSITION_TO_CLASS = {
+  'left-middle': 'left',
+  'right-middle': 'right',
+  'right-top': 'top-right',
+  'left-top': 'top-left',
+  'top-left': 'left',
+  'top-right': 'right',
+  'bottom-right': 'top-right',
+};
+
+const MAP_POSITION_TO_TOOLTIP_POSITION = {};
+
+function positionToClass(position: string) {
+  if (Object.keys(MAP_POSITION_TO_CLASS).includes(position)) {
+    return MAP_POSITION_TO_CLASS[position];
+  }
+  return position;
+}
+
+function mapPositionToTooltipPosition(position: string) {
+  if (Object.keys(MAP_POSITION_TO_TOOLTIP_POSITION).includes(position)) {
+    return MAP_POSITION_TO_TOOLTIP_POSITION[position];
+  }
+  return position;
+}
 
 @Component({
   selector: 'clr-tooltip-content',
@@ -44,6 +73,7 @@ const POSITIONS: string[] = ['left', 'right', 'top-left', 'top-right', 'bottom-l
 })
 export class ClrTooltipContent extends AbstractPopover implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
+  private lastClass: string = '';
 
   constructor(
     injector: Injector,
@@ -51,6 +81,7 @@ export class ClrTooltipContent extends AbstractPopover implements OnInit, OnDest
     @Inject(UNIQUE_ID) public popoverId: string,
     private smartToggleService: ClrPopoverToggleService,
     @Optional() private ifOpen: IfOpenService,
+    private tooltipSync: TooltipSyncService,
     private cdr: ChangeDetectorRef
   ) {
     super(injector, parentHost);
@@ -59,11 +90,9 @@ export class ClrTooltipContent extends AbstractPopover implements OnInit, OnDest
       throw new Error('clr-tooltip-content should only be used inside of a clr-tooltip');
     }
 
-    this.updateId(popoverId);
+    this.tooltipSync.updateId(popoverId);
 
-    // Defaults
-    this.position = 'right';
-    this.size = 'sm';
+    /* No need to to subscribe to ID changes - they origin from this component */
   }
 
   ngOnInit() {
@@ -83,36 +112,46 @@ export class ClrTooltipContent extends AbstractPopover implements OnInit, OnDest
       sub.unsubscribe();
     });
   }
-
-  finalizePosition(position: string) {
-    if (this.position !== position) {
-      this.position = position;
-      this.cdr.detectChanges();
-    }
-  }
-
   // ID
 
   private _id;
   @Input()
   set id(value: string) {
-    value ? this.updateId(value) : this.updateId('');
+    value ? this.tooltipSync.updateId(value) : this.tooltipSync.updateId('');
   }
 
   get id(): string {
     return this._id;
   }
 
-  private updateId(id: string) {
-    this._id = id;
-  }
-
   // POSITION
+
+  updatePosition(position: string) {
+    if (position !== this._position) {
+      this.position = position;
+      this.cdr.detectChanges();
+    }
+  }
 
   private _position: string;
   @Input('clrPosition')
   set position(position: string) {
-    this.renderer.removeClass(this.el.nativeElement, 'tooltip-' + this._position);
+    console.group('clrPosition tooltipContent', this.parentHost);
+    console.log('Requested position: ', position);
+    console.log('Last class ', this.lastClass);
+
+    // Don't try to remove class without a name - it won't work
+    if (this.lastClass !== '') {
+      this.renderer.removeClass(this.el.nativeElement, this.lastClass);
+    }
+
+    /*
+     * Overwrite the position that we want in the cases that we get one of
+     * left, right, *-middle positions - Current implementation of the tooltip don't support them
+     * so need to ignore them and use one that we know what to do.
+     */
+    position = mapPositionToTooltipPosition(position);
+    console.log('Map Position', position);
 
     if (validPosition(position)) {
       this._position = position;
@@ -120,7 +159,15 @@ export class ClrTooltipContent extends AbstractPopover implements OnInit, OnDest
       this._position = 'right';
     }
 
-    this.renderer.addClass(this.el.nativeElement, 'tooltip-' + this._position);
+    this.lastClass = 'tooltip-' + positionToClass(this._position);
+
+    console.log('Updated class', this.lastClass);
+    this.renderer.addClass(this.el.nativeElement, this.lastClass);
+    console.groupEnd();
+  }
+
+  get position() {
+    return this._position;
   }
   // SIZE
 

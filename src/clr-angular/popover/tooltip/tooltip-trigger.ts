@@ -6,6 +6,8 @@
 
 import { Directive, HostListener, ChangeDetectorRef } from '@angular/core';
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
+import { TooltipSyncService } from './providers/tooltip-sync.service';
+import { Subscription } from 'rxjs';
 
 @Directive({
   selector: '[clrTooltipTrigger]',
@@ -17,28 +19,35 @@ import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-t
   },
 })
 export class ClrTooltipTrigger {
-  constructor(private smartToggleService: ClrPopoverToggleService, private cdr: ChangeDetectorRef) {}
+  private subscriptions: Subscription[] = [];
+  public ariaDescribedBy: string = '';
 
-  private _ariaDescribedBy: string = '';
-  public set ariaDescribedBy(value: string) {
-    if (this._ariaDescribedBy !== value) {
-      this._ariaDescribedBy = value;
-      this.cdr.detectChanges();
-    }
-  }
-  public get ariaDescribedBy() {
-    return this._ariaDescribedBy;
-  }
-
-  @HostListener('mouseenter')
-  @HostListener('focus')
-  showTooltip(): void {
-    this.smartToggleService.open = true;
+  constructor(
+    private smartToggleService: ClrPopoverToggleService,
+    private tooltipSync: TooltipSyncService,
+    private cdr: ChangeDetectorRef
+  ) {
+    // Update the aria described by with the new ID
+    this.subscriptions.push(
+      this.tooltipSync.id.subscribe(change => {
+        this.ariaDescribedBy = change;
+      })
+    );
   }
 
-  @HostListener('mouseleave')
-  @HostListener('blur')
-  hideTooltip(): void {
-    this.smartToggleService.open = false;
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
+
+  @HostListener('mouseenter', ['$event'])
+  @HostListener('focus', ['$event'])
+  showTooltip($event): void {
+    this.smartToggleService.toggleWithEvent($event);
+  }
+
+  @HostListener('mouseleave', ['$event'])
+  @HostListener('blur', ['$event'])
+  hideTooltip($event): void {
+    this.smartToggleService.toggleWithEvent($event);
   }
 }
