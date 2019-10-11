@@ -18,7 +18,7 @@ import { ClrPopoverAdapter } from '../../utils/popover/adapter/popover-adapter';
 import { ClrTooltipContent } from './tooltip-content';
 import { ClrTooltipTrigger } from './tooltip-trigger';
 
-const DEFAULT_POSITION = 'bottom-right';
+const DEFAULT_POSITION = 'top-right';
 
 @Component({
   selector: 'clr-tooltip',
@@ -62,28 +62,32 @@ export class ClrTooltip {
 
   @ContentChild(ClrTooltipTrigger, { static: false })
   tooltipTrigger: ClrTooltipTrigger;
+
   ngAfterViewInit() {
-    if (![undefined, ''].includes(this.content.id)) {
-      this.tooltipTrigger.ariaDescribedBy = this.content.id;
+    if (![undefined, ''].includes(this.tooltipContent.id)) {
+      this.tooltipTrigger.ariaDescribedBy = this.tooltipContent.id;
+    }
+    if (this.tooltipContent && this.tooltipContent.position !== undefined) {
+      this.position = this.tooltipContent.position;
     }
   }
 
   private _content: ClrTooltipContent;
   @ContentChild(ClrTooltipContent, { static: false })
-  set content(content: ClrTooltipContent) {
+  set tooltipContent(content: ClrTooltipContent) {
     if (!content) {
       return;
     }
     this._content = content;
     this.position = this._content.position;
   }
-  get content() {
+  get tooltipContent() {
     return this._content;
   }
 
   updatedPosition(position: string) {
-    if (this.content) {
-      this.content.finalizePosition(position);
+    if (this.tooltipContent && position !== null) {
+      this.tooltipContent.finalizePosition(position);
     }
   }
 }

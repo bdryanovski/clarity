@@ -24,6 +24,7 @@ import { Subscription } from 'rxjs';
 import { validPosition } from '../../utils/popover/position-operators';
 
 const SIZES: string[] = ['xs', 'sm', 'md', 'lg'];
+
 // TODO remove this just keep it until all positions are validated
 const POSITIONS: string[] = ['left', 'right', 'top-left', 'top-right', 'bottom-left', 'bottom-right'];
 
@@ -84,8 +85,8 @@ export class ClrTooltipContent extends AbstractPopover implements OnInit, OnDest
   }
 
   finalizePosition(position: string) {
-    if (position !== this.position) {
-      this._position = position;
+    if (this.position !== position) {
+      this.position = position;
       this.cdr.detectChanges();
     }
   }
@@ -111,7 +112,7 @@ export class ClrTooltipContent extends AbstractPopover implements OnInit, OnDest
   private _position: string;
   @Input('clrPosition')
   set position(position: string) {
-    this.renderer.removeClass(this.el.nativeElement, 'tooltip-' + this.position);
+    this.renderer.removeClass(this.el.nativeElement, 'tooltip-' + this._position);
 
     if (validPosition(position)) {
       this._position = position;
@@ -121,11 +122,6 @@ export class ClrTooltipContent extends AbstractPopover implements OnInit, OnDest
 
     this.renderer.addClass(this.el.nativeElement, 'tooltip-' + this._position);
   }
-
-  get position(): string {
-    return this._position;
-  }
-
   // SIZE
 
   private _size: string;
