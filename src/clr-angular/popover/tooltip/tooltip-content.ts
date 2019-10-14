@@ -30,29 +30,16 @@ const SIZES: string[] = ['xs', 'sm', 'md', 'lg'];
 // TODO remove this just keep it until all positions are validated
 const POSITIONS: string[] = ['left', 'right', 'top-left', 'top-right', 'bottom-left', 'bottom-right'];
 
-// TODO this is not valid all the time
 const MAP_POSITION_TO_CLASS = {
-  'left-middle': 'left',
-  'right-middle': 'right',
-  'right-top': 'top-right',
-  'left-top': 'top-left',
   'top-left': 'left',
+  'left-top': 'left',
   'top-right': 'right',
-  'bottom-right': 'top-right',
+  'right-top': 'right',
 };
 
-const MAP_POSITION_TO_TOOLTIP_POSITION = {};
-
-function positionToClass(position: string) {
+function calculatePositionClass(position: string): string {
   if (Object.keys(MAP_POSITION_TO_CLASS).includes(position)) {
     return MAP_POSITION_TO_CLASS[position];
-  }
-  return position;
-}
-
-function mapPositionToTooltipPosition(position: string) {
-  if (Object.keys(MAP_POSITION_TO_TOOLTIP_POSITION).includes(position)) {
-    return MAP_POSITION_TO_TOOLTIP_POSITION[position];
   }
   return position;
 }
@@ -136,39 +123,30 @@ export class ClrTooltipContent extends AbstractPopover implements OnInit, OnDest
   private _position: string;
   @Input('clrPosition')
   set position(position: string) {
-    console.group('clrPosition tooltipContent', this.parentHost);
-    console.log('Requested position: ', position);
-    console.log('Last class ', this.lastClass);
-
     // Don't try to remove class without a name - it won't work
     if (this.lastClass !== '') {
       this.renderer.removeClass(this.el.nativeElement, this.lastClass);
     }
 
-    /*
-     * Overwrite the position that we want in the cases that we get one of
-     * left, right, *-middle positions - Current implementation of the tooltip don't support them
-     * so need to ignore them and use one that we know what to do.
-     */
-    position = mapPositionToTooltipPosition(position);
-    console.log('Map Position', position);
-
-    if (validPosition(position)) {
+    if (this.validPosition(position)) {
       this._position = position;
     } else {
       this._position = 'right';
     }
 
-    this.lastClass = 'tooltip-' + positionToClass(this._position);
+    this.lastClass = 'tooltip-' + calculatePositionClass(this._position);
 
-    console.log('Updated class', this.lastClass);
     this.renderer.addClass(this.el.nativeElement, this.lastClass);
-    console.groupEnd();
   }
 
   get position() {
     return this._position;
   }
+
+  validPosition(position: string): boolean {
+    return validPosition(position) || ['left', 'right'].includes(position);
+  }
+
   // SIZE
 
   private _size: string;
