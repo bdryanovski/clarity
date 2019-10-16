@@ -104,12 +104,12 @@ export class ClrPopoverAdapter implements OnInit, OnDestroy {
     return this._position;
   }
 
+  @HostBinding('class.clr-open')
   @Input('clrOpenState')
   set openState(state: boolean) {
     this.toggleService.open = state;
   }
 
-  @HostBinding('class.clr-open')
   get openState(): boolean {
     return this.toggleService.open;
   }
