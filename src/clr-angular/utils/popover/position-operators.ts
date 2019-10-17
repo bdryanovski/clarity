@@ -10,6 +10,7 @@ import { ClrPopoverContentOffset } from './interfaces/popover-content-offset.int
 import { ClrViewportViolation } from './enums/viewport-violation.enum';
 import { ClrVisibilityCoords } from './interfaces/visibility-coords.interface';
 import { ClrAlignment } from './enums/alignment.enum';
+import { ClrPopoverStringMap } from './interfaces/popover-strings-map.interface';
 
 // Put the forward arg here but it is only needed when nudging content or anchors.
 export type ClrTransform = (position: ClrPopoverPosition, back?: boolean) => ClrPopoverPosition;
@@ -198,4 +199,41 @@ export function testVisibility(offset: ClrPopoverContentOffset, content: ClientR
   }
 
   return violations;
+}
+
+export function positionsEqual(positionA: ClrPopoverPosition, positionB: ClrPopoverPosition): boolean {
+  if ([undefined, null].includes(positionA) || [undefined, null].includes(positionB)) {
+    return false;
+  }
+
+  const aProps = Object.keys(positionA);
+  const bProps = Object.keys(positionB);
+
+  if (aProps.length !== bProps.length) {
+    return false;
+  }
+
+  for (const propName of aProps) {
+    if (positionA[propName] !== positionB[propName]) {
+      return false;
+    }
+  }
+  return true;
+}
+
+export function findPositionObject(position: string, map: ClrPopoverStringMap): ClrPopoverPosition {
+  return map[position] || null;
+}
+
+export function validPosition(position: string, map: ClrPopoverStringMap): boolean {
+  return position && !!map[position];
+}
+
+export function findPositionString(position: ClrPopoverPosition, map: ClrPopoverStringMap): string {
+  for (const key in map) {
+    if (positionsEqual(position, map[key])) {
+      return key;
+    }
+  }
+  return null;
 }
