@@ -5,20 +5,22 @@
  */
 
 import { ContentChild, Directive, OnDestroy, Optional } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { NgControl } from '@angular/forms';
 
 import { IfErrorService } from './if-error/if-error.service';
+import { IfSuccessService } from './if-success/if-success.service';
 import { NgControlService } from './providers/ng-control.service';
 import { LayoutService } from './providers/layout.service';
 import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 import { ClrLabel } from './label';
 import { ControlClassService } from './providers/control-class.service';
+import { RxSubscription } from '../../utils/rx/rx-subscriptions';
 
 @Directive()
 export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy {
-  protected subscriptions: Subscription[] = [];
+  protected subscriptions = new RxSubscription();
   invalid = false;
+  valid = false;
   _dynamic = false;
   @ContentChild(ClrLabel, { static: false })
   label: ClrLabel;
@@ -26,24 +28,26 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy 
 
   constructor(
     protected ifErrorService: IfErrorService,
+    protected ifSuccessService: IfSuccessService,
     @Optional() protected layoutService: LayoutService,
     protected controlClassService: ControlClassService,
     protected ngControlService: NgControlService
   ) {
-    this.subscriptions.push(
-      this.ifErrorService.statusChanges.subscribe(invalid => {
-        this.invalid = invalid;
-      })
-    );
-    this.subscriptions.push(
-      this.ngControlService.controlChanges.subscribe(control => {
-        this.control = control;
-      })
-    );
+    this.subscriptions.subscribe = this.ifErrorService.statusChanges.subscribe(invalid => {
+      this.invalid = invalid;
+    });
+
+    this.subscriptions.subscribe = this.ifSuccessService.statusChanges.subscribe(valid => {
+      this.valid = valid;
+    });
+
+    this.subscriptions.subscribe = this.ngControlService.controlChanges.subscribe(control => {
+      this.control = control;
+    });
   }
 
   controlClass() {
-    return this.controlClassService.controlClass(this.invalid, this.addGrid());
+    return this.controlClassService.controlClass(this.invalid, this.valid, this.addGrid());
   }
 
   addGrid() {
@@ -51,6 +55,6 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy 
   }
 
   ngOnDestroy() {
-    this.subscriptions.map(sub => sub.unsubscribe());
+    this.subscriptions.unsubscribe();
   }
 }

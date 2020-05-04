@@ -11,6 +11,7 @@ import { NgControlService } from '../common/providers/ng-control.service';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
+import { IfSuccessService } from '../common/if-success/if-success.service';
 
 @Component({
   selector: 'clr-textarea-container',
@@ -21,9 +22,11 @@ import { ClrAbstractContainer } from '../common/abstract-container';
       <div class="clr-textarea-wrapper">
         <ng-content select="[clrTextarea]"></ng-content>
         <clr-icon *ngIf="invalid" class="clr-validate-icon" shape="exclamation-circle" aria-hidden="true"></clr-icon>
+        <clr-icon *ngIf="valid" class="clr-validate-icon" shape="check-circle" aria-hidden="true"></clr-icon>
       </div>
-      <ng-content select="clr-control-helper" *ngIf="!invalid"></ng-content>
+      <ng-content select="clr-control-helper" *ngIf="!invalid && !valid"></ng-content>
       <ng-content select="clr-control-error" *ngIf="invalid"></ng-content>
+      <ng-content select="clr-control-success" *ngIf="valid"></ng-content>
     </div>
   `,
   host: {
@@ -31,6 +34,6 @@ import { ClrAbstractContainer } from '../common/abstract-container';
     '[class.clr-form-control-disabled]': 'control?.disabled',
     '[class.clr-row]': 'addGrid()',
   },
-  providers: [IfErrorService, NgControlService, ControlIdService, ControlClassService],
+  providers: [IfErrorService, IfSuccessService, NgControlService, ControlIdService, ControlClassService],
 })
 export class ClrTextareaContainer extends ClrAbstractContainer {}

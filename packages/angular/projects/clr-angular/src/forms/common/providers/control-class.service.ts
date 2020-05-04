@@ -7,17 +7,25 @@
 import { Injectable, Optional, Renderer2 } from '@angular/core';
 import { LayoutService } from './layout.service';
 
+const CLASS_ERROR = 'clr-error';
+const CLASS_SUCCESS = 'clr-success';
+
 @Injectable()
 export class ControlClassService {
   className = '';
 
   constructor(@Optional() private layoutService: LayoutService) {}
 
-  controlClass(invalid = false, grid = false, additional = '') {
+  // @TODO: rework how we pass arguments
+  controlClass(invalid = false, valid = false, grid = false, additional = '') {
     const controlClasses = [this.className, additional];
-    if (invalid) {
-      controlClasses.push('clr-error');
+    if (invalid && !valid) {
+      controlClasses.push(CLASS_ERROR);
     }
+    if (valid && !invalid) {
+      controlClasses.push(CLASS_SUCCESS);
+    }
+
     if (grid && this.layoutService && this.className.indexOf('clr-col') === -1) {
       controlClasses.push(`clr-col-md-${this.layoutService.maxLabelSize - this.layoutService.labelSize} clr-col-12`);
     }

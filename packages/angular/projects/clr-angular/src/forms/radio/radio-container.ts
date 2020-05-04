@@ -11,6 +11,7 @@ import { ControlClassService } from '../common/providers/control-class.service';
 import { NgControlService } from '../common/providers/ng-control.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
 import { LayoutService } from '../common/providers/layout.service';
+import { IfSuccessService } from '../common/if-success/if-success.service';
 
 @Component({
   selector: 'clr-radio-container',
@@ -20,9 +21,11 @@ import { LayoutService } from '../common/providers/layout.service';
     <div class="clr-control-container" [class.clr-control-inline]="clrInline" [ngClass]="controlClass()">
       <ng-content select="clr-radio-wrapper"></ng-content>
       <div class="clr-subtext-wrapper">
-        <ng-content select="clr-control-helper" *ngIf="!invalid"></ng-content>
+        <ng-content select="clr-control-helper" *ngIf="!invalid && !valid"></ng-content>
         <clr-icon *ngIf="invalid" class="clr-validate-icon" shape="exclamation-circle" aria-hidden="true"></clr-icon>
+        <clr-icon *ngIf="valid" class="clr-validate-icon" shape="check-circle" aria-hidden="true"></clr-icon>
         <ng-content select="clr-control-error" *ngIf="invalid"></ng-content>
+        <ng-content select="clr-control-success" *ngIf="valid"></ng-content>
       </div>
     </div>
   `,
@@ -31,18 +34,19 @@ import { LayoutService } from '../common/providers/layout.service';
     '[class.clr-form-control-disabled]': 'control?.disabled',
     '[class.clr-row]': 'addGrid()',
   },
-  providers: [NgControlService, ControlClassService, IfErrorService],
+  providers: [NgControlService, IfSuccessService, ControlClassService, IfErrorService],
 })
 export class ClrRadioContainer extends ClrAbstractContainer {
   private inline = false;
 
   constructor(
     protected ifErrorService: IfErrorService,
+    protected ifSuccessService: IfSuccessService,
     @Optional() protected layoutService: LayoutService,
     protected controlClassService: ControlClassService,
     protected ngControlService: NgControlService
   ) {
-    super(ifErrorService, layoutService, controlClassService, ngControlService);
+    super(ifErrorService, ifSuccessService, layoutService, controlClassService, ngControlService);
   }
 
   /*

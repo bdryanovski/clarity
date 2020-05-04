@@ -13,6 +13,7 @@ import { IfErrorService } from '../common/if-error/if-error.service';
 import { NgControlService } from '../common/providers/ng-control.service';
 import { DatalistIdService } from './providers/datalist-id.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
+import { IfSuccessService } from '../common/if-success/if-success.service';
 
 @Component({
   selector: 'clr-datalist-container',
@@ -26,9 +27,11 @@ import { ClrAbstractContainer } from '../common/abstract-container';
           <ng-content select="datalist"></ng-content>
         </div>
         <clr-icon *ngIf="invalid" class="clr-validate-icon" shape="exclamation-circle" aria-hidden="true"></clr-icon>
+        <clr-icon *ngIf="valid" class="clr-validate-icon" shape="check-circle" aria-hidden="true"></clr-icon>
       </div>
-      <ng-content select="clr-control-helper" *ngIf="!invalid"></ng-content>
+      <ng-content select="clr-control-helper" *ngIf="!invalid && !valid"></ng-content>
       <ng-content select="clr-control-error" *ngIf="invalid"></ng-content>
+      <ng-content select="clr-control-success" *ngIf="valid"></ng-content>
     </div>
   `,
   host: {
@@ -44,20 +47,22 @@ import { ClrAbstractContainer } from '../common/abstract-container';
     IfErrorService,
     NgControlService,
     DatalistIdService,
+    IfSuccessService,
   ],
 })
 export class ClrDatalistContainer extends ClrAbstractContainer {
   focus = false;
 
   constructor(
+    ifSuccessService: IfSuccessService,
     controlClassService: ControlClassService,
     @Optional() layoutService: LayoutService,
     ifErrorService: IfErrorService,
     ngControlService: NgControlService,
     private focusService: FocusService
   ) {
-    super(ifErrorService, layoutService, controlClassService, ngControlService);
+    super(ifErrorService, ifSuccessService, layoutService, controlClassService, ngControlService);
 
-    this.subscriptions.push(this.focusService.focusChange.subscribe(state => (this.focus = state)));
+    this.subscriptions.subscribe = this.focusService.focusChange.subscribe(state => (this.focus = state));
   }
 }

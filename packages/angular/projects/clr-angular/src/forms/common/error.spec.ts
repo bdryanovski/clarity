@@ -4,12 +4,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 import { Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-
+import { ClrAriaLiveService } from '../../utils/a11y/aria-live.service';
 import { ClrControlError } from './error';
 import { ControlIdService } from './providers/control-id.service';
-import { ClrAriaLiveService } from '../../utils/a11y/aria-live.service';
 
 @Component({ template: `<clr-control-error>Test error</clr-control-error>` })
 class SimpleTest {}
@@ -19,7 +18,7 @@ class ExplicitAriaTest {}
 
 export default function (): void {
   describe('ClrControlError', () => {
-    let fixture, announceSpyOn;
+    let fixture: ComponentFixture<SimpleTest>, announceSpyOn;
 
     beforeEach(function () {
       TestBed.configureTestingModule({

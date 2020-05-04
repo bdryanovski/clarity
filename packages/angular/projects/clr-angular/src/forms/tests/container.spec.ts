@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2019 VMware, Inc. All Rights Reserved.
+ * Copyright (c) 2016-2020 VMware, Inc. All Rights Reserved.
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
@@ -16,6 +16,7 @@ import { Layouts, LayoutService } from '../common/providers/layout.service';
 import { MarkControlService } from '../common/providers/mark-control.service';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { DatalistIdService } from '../datalist/providers/datalist-id.service';
+import { IfSuccessService } from '../common/if-success/if-success.service';
 
 export function ContainerNoLabelSpec(testContainer, testControl, testComponent): void {
   describe('no label', () => {
@@ -58,7 +59,14 @@ export function ReactiveSpec(testContainer, testControl, testComponent, wrapperC
 
 function fullSpec(description, testContainer, directives: any | any[], testComponent, wrapperClass) {
   describe(description, () => {
-    let fixture, containerDE, container, containerEl, ifErrorService, layoutService, markControlService;
+    let fixture,
+      containerDE,
+      container,
+      containerEl,
+      ifErrorService: IfErrorService,
+      ifSuccessService: IfSuccessService,
+      layoutService,
+      markControlService;
     if (!Array.isArray(directives)) {
       directives = [directives];
     }
@@ -69,6 +77,7 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
         providers: [
           NgControl,
           NgControlService,
+          IfSuccessService,
           IfErrorService,
           LayoutService,
           MarkControlService,
@@ -82,6 +91,7 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
       container = containerDE.componentInstance;
       containerEl = containerDE.nativeElement;
       ifErrorService = containerDE.injector.get(IfErrorService);
+      ifSuccessService = containerDE.injector.get(IfSuccessService);
       markControlService = containerDE.injector.get(MarkControlService);
       layoutService = containerDE.injector.get(LayoutService);
       fixture.detectChanges();
@@ -94,7 +104,12 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
 
     it('injects the ifErrorService and subscribes', () => {
       expect(ifErrorService).toBeTruthy();
-      expect(container.subscriptions[0]).toBeTruthy();
+      expect(container.subscriptions.subscriptions[0]).toBeTruthy();
+    });
+
+    it('injects the IfSuccessService and subscribes', () => {
+      expect(ifSuccessService).toBeTruthy();
+      expect(container.subscriptions.subscriptions[1]).toBeTruthy();
     });
 
     it('projects the label as first child', () => {

@@ -15,6 +15,7 @@ import { LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
+import { IfSuccessService } from '../common/if-success/if-success.service';
 
 export const TOGGLE_SERVICE = new InjectionToken<BehaviorSubject<boolean>>(undefined);
 export function ToggleServiceFactory() {
@@ -45,9 +46,11 @@ export const TOGGLE_SERVICE_PROVIDER = { provide: TOGGLE_SERVICE, useFactory: To
           </button>
         </div>
         <clr-icon *ngIf="invalid" class="clr-validate-icon" shape="exclamation-circle" aria-hidden="true"></clr-icon>
+        <clr-icon *ngIf="valid" class="clr-validate-icon" shape="check-circle" aria-hidden="true"></clr-icon>
       </div>
-      <ng-content select="clr-control-helper" *ngIf="!invalid"></ng-content>
+      <ng-content select="clr-control-helper" *ngIf="!invalid && !valid"></ng-content>
       <ng-content select="clr-control-error" *ngIf="invalid"></ng-content>
+      <ng-content select="clr-control-success" *ngIf="valid"></ng-content>
     </div>
   `,
   host: {
@@ -62,6 +65,7 @@ export const TOGGLE_SERVICE_PROVIDER = { provide: TOGGLE_SERVICE, useFactory: To
     ControlClassService,
     FocusService,
     TOGGLE_SERVICE_PROVIDER,
+    IfSuccessService,
   ],
 })
 export class ClrPasswordContainer extends ClrAbstractContainer {
@@ -82,6 +86,7 @@ export class ClrPasswordContainer extends ClrAbstractContainer {
 
   constructor(
     ifErrorService: IfErrorService,
+    ifSuccessService: IfSuccessService,
     @Optional() layoutService: LayoutService,
     controlClassService: ControlClassService,
     ngControlService: NgControlService,
@@ -89,12 +94,10 @@ export class ClrPasswordContainer extends ClrAbstractContainer {
     @Inject(TOGGLE_SERVICE) private toggleService: BehaviorSubject<boolean>,
     public commonStrings: ClrCommonStringsService
   ) {
-    super(ifErrorService, layoutService, controlClassService, ngControlService);
-    this.subscriptions.push(
-      this.focusService.focusChange.subscribe(state => {
-        this.focus = state;
-      })
-    );
+    super(ifErrorService, ifSuccessService, layoutService, controlClassService, ngControlService);
+    this.subscriptions.subscribe = this.focusService.focusChange.subscribe(state => {
+      this.focus = state;
+    });
   }
 
   toggle() {

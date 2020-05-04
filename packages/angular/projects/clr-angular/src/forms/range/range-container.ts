@@ -12,6 +12,7 @@ import { LayoutService } from '../common/providers/layout.service';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
+import { IfSuccessService } from '../common/if-success/if-success.service';
 
 @Component({
   selector: 'clr-range-container',
@@ -23,9 +24,11 @@ import { ClrAbstractContainer } from '../common/abstract-container';
         <ng-content select="[clrRange]"></ng-content>
         <span *ngIf="hasProgress" class="fill-input" [style.width]="getRangeProgressFillWidth()"></span>
         <clr-icon *ngIf="invalid" class="clr-validate-icon" shape="exclamation-circle" aria-hidden="true"></clr-icon>
+        <clr-icon *ngIf="valid" class="clr-validate-icon" shape="check-circle" aria-hidden="true"></clr-icon>
       </div>
-      <ng-content select="clr-control-helper" *ngIf="!invalid"></ng-content>
+      <ng-content select="clr-control-helper" *ngIf="!invalid && !valid"></ng-content>
       <ng-content select="clr-control-error" *ngIf="invalid"></ng-content>
+      <ng-content select="clr-control-success" *ngIf="valid"></ng-content>
     </div>
   `,
   host: {
@@ -33,7 +36,7 @@ import { ClrAbstractContainer } from '../common/abstract-container';
     '[class.clr-form-control-disabled]': 'control?.disabled',
     '[class.clr-row]': 'addGrid()',
   },
-  providers: [IfErrorService, NgControlService, ControlIdService, ControlClassService],
+  providers: [IfErrorService, IfSuccessService, NgControlService, ControlIdService, ControlClassService],
 })
 export class ClrRangeContainer extends ClrAbstractContainer {
   private _hasProgress = false;
@@ -52,13 +55,14 @@ export class ClrRangeContainer extends ClrAbstractContainer {
 
   constructor(
     ifErrorService: IfErrorService,
+    ifSuccessService: IfSuccessService,
     @Optional() layoutService: LayoutService,
     controlClassService: ControlClassService,
     ngControlService: NgControlService,
     private renderer: Renderer2,
     private idService: ControlIdService
   ) {
-    super(ifErrorService, layoutService, controlClassService, ngControlService);
+    super(ifErrorService, ifSuccessService, layoutService, controlClassService, ngControlService);
   }
 
   getRangeProgressFillWidth(): string {

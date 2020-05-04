@@ -6,11 +6,13 @@
 
 import CommonSpecs from './common.spec';
 import ErrorSpecs from './error.spec';
+import SuccessSpec from './success.spec';
 import HelperSpecs from './helper.spec';
 import FormSpecs from './form.spec';
 import ControlStatusServiceSpecs from './if-error/if-error.service.spec';
 import LayoutSpecs from './layout.spec';
 import IfErrorSpecs from './if-error/if-error.spec';
+import IfSuccessSpecs from './if-success/if-success.spec';
 import LabelSpecs from './label.spec';
 import ControlClassServiceSpecs from './providers/control-class.service.spec';
 import ControlIdServiceSpecs from './providers/control-id.service.spec';
@@ -30,8 +32,10 @@ describe('Forms common utilities', function () {
   FormSpecs();
   LabelSpecs();
   IfErrorSpecs();
+  IfSuccessSpecs();
   WrappedControlSpecs();
   CommonSpecs();
   ErrorSpecs();
+  SuccessSpec();
   HelperSpecs();
 });

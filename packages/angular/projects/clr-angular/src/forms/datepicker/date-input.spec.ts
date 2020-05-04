@@ -32,6 +32,7 @@ import { ViewManagerService } from './providers/view-manager.service';
 import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
 import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { LayoutService } from '../common/providers/layout.service';
+import { IfSuccessService } from '../common/if-success/if-success.service';
 
 export default function () {
   describe('Date Input Component', () => {
@@ -58,6 +59,7 @@ export default function () {
       NgControl,
       LayoutService,
       IfErrorService,
+      IfSuccessService,
       ClrPopoverToggleService,
       ClrPopoverEventsService,
       ClrPopoverPositionService,

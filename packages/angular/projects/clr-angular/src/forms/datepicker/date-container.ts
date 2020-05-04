@@ -37,6 +37,7 @@ import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-posit
 import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
 import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { ViewManagerService } from './providers/view-manager.service';
+import { IfSuccessService } from '../common/if-success/if-success.service';
 
 @Component({
   selector: 'clr-date-container',
@@ -65,9 +66,11 @@ import { ViewManagerService } from './providers/view-manager.service';
           ></clr-datepicker-view-manager>
         </div>
         <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
+        <clr-icon *ngIf="valid" class="clr-validate-icon" shape="check-circle" aria-hidden="true"></clr-icon>
       </div>
       <ng-content select="clr-control-helper" *ngIf="!invalid"></ng-content>
       <ng-content select="clr-control-error" *ngIf="invalid"></ng-content>
+      <ng-content select="clr-control-success" *ngIf="valid"></ng-content>
     </div>
   `,
   providers: [
@@ -77,6 +80,7 @@ import { ViewManagerService } from './providers/view-manager.service';
     ClrPopoverPositionService,
     LocaleHelperService,
     IfErrorService,
+    IfSuccessService,
     ControlClassService,
     FocusService,
     NgControlService,
@@ -96,6 +100,7 @@ export class ClrDateContainer implements DynamicWrapper, OnDestroy, AfterViewIni
   _dynamic = false;
   invalid = false;
   focus = false;
+  valid = false;
   control: NgControl;
   @ContentChild(ClrLabel) label: ClrLabel;
   @Input('clrPosition')
@@ -127,6 +132,7 @@ export class ClrDateContainer implements DynamicWrapper, OnDestroy, AfterViewIni
     private dateFormControlService: DateFormControlService,
     public commonStrings: ClrCommonStringsService,
     private ifErrorService: IfErrorService,
+    private ifSuccessService: IfSuccessService,
     private focusService: FocusService,
     private viewManagerService: ViewManagerService,
     private controlClassService: ControlClassService,
@@ -152,6 +158,11 @@ export class ClrDateContainer implements DynamicWrapper, OnDestroy, AfterViewIni
         this.invalid = invalid;
       })
     );
+    this.subscriptions.push(
+      this.ifSuccessService.statusChanges.subscribe(valid => {
+        this.valid = valid;
+      })
+    );
   }
 
   ngAfterViewInit(): void {
@@ -170,7 +181,7 @@ export class ClrDateContainer implements DynamicWrapper, OnDestroy, AfterViewIni
    * Returns the classes to apply to the control
    */
   controlClass() {
-    return this.controlClassService.controlClass(this.invalid, this.addGrid());
+    return this.controlClassService.controlClass(this.invalid, this.valid, this.addGrid());
   }
 
   /**

@@ -30,6 +30,7 @@ import { ClrPopoverPositions } from '../../utils/popover/enums/positions.enum';
 import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
 import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { ViewManagerService } from './providers/view-manager.service';
+import { IfSuccessService } from '../common/if-success/if-success.service';
 
 const DATEPICKER_PROVIDERS: any[] = [
   ClrPopoverEventsService,
@@ -40,6 +41,7 @@ const DATEPICKER_PROVIDERS: any[] = [
   LocaleHelperService,
   ControlClassService,
   IfErrorService,
+  IfSuccessService,
   FocusService,
   LayoutService,
   NgControlService,

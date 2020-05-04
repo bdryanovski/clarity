@@ -6,13 +6,11 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, Validators } from '@angular/forms';
-
 import { ClrIconModule } from '../../../icon/icon.module';
 import { ClrInput } from '../../input/input';
 import { ClrInputContainer } from '../../input/input-container';
 import { ClrControlError } from '../error';
 import { NgControlService } from '../providers/ng-control.service';
-
 import { ClrIfError } from './if-error';
 import { IfErrorService } from './if-error.service';
 
