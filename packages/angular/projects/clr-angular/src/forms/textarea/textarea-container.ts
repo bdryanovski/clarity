@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { Component, ContentChild } from '@angular/core';
 
 import { IfErrorService } from '../common/if-error/if-error.service';
 import { NgControlService } from '../common/providers/ng-control.service';
@@ -12,6 +12,7 @@ import { ControlIdService } from '../common/providers/control-id.service';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
 import { IfSuccessService } from '../common/if-success/if-success.service';
+import { ClrControlSuccess } from '../common/success';
 
 @Component({
   selector: 'clr-textarea-container',
@@ -22,7 +23,12 @@ import { IfSuccessService } from '../common/if-success/if-success.service';
       <div class="clr-textarea-wrapper">
         <ng-content select="[clrTextarea]"></ng-content>
         <clr-icon *ngIf="invalid" class="clr-validate-icon" shape="exclamation-circle" aria-hidden="true"></clr-icon>
-        <clr-icon *ngIf="valid" class="clr-validate-icon" shape="check-circle" aria-hidden="true"></clr-icon>
+        <clr-icon
+          *ngIf="valid && controllSuccessComponent"
+          class="clr-validate-icon"
+          shape="check-circle"
+          aria-hidden="true"
+        ></clr-icon>
       </div>
       <ng-content select="clr-control-helper" *ngIf="!invalid && !valid"></ng-content>
       <ng-content select="clr-control-error" *ngIf="invalid"></ng-content>
@@ -36,4 +42,6 @@ import { IfSuccessService } from '../common/if-success/if-success.service';
   },
   providers: [IfErrorService, IfSuccessService, NgControlService, ControlIdService, ControlClassService],
 })
-export class ClrTextareaContainer extends ClrAbstractContainer {}
+export class ClrTextareaContainer extends ClrAbstractContainer {
+  @ContentChild(ClrControlSuccess) controllSuccessComponent: ClrControlSuccess;
+}

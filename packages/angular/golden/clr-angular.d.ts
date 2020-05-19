@@ -269,6 +269,7 @@ export declare class ClrCheckboxContainer extends ClrAbstractContainer {
     set clrInline(value: boolean | string);
     get clrInline(): boolean | string;
     protected controlClassService: ControlClassService;
+    controllSuccessComponent: ClrControlSuccess;
     protected ifErrorService: IfErrorService;
     protected ifSuccessService: IfSuccessService;
     protected layoutService: LayoutService;
@@ -749,6 +750,7 @@ export declare class ClrDatalist implements AfterContentInit {
 }
 
 export declare class ClrDatalistContainer extends ClrAbstractContainer {
+    controllSuccessComponent: ClrControlSuccess;
     focus: boolean;
     constructor(ifSuccessService: IfSuccessService, controlClassService: ControlClassService, layoutService: LayoutService, ifErrorService: IfErrorService, ngControlService: NgControlService, focusService: FocusService);
 }
@@ -773,6 +775,7 @@ export declare class ClrDateContainer implements DynamicWrapper, OnDestroy, Afte
     set clrPosition(position: string);
     commonStrings: ClrCommonStringsService;
     control: NgControl;
+    controllSuccessComponent: ClrControlSuccess;
     focus: boolean;
     invalid: boolean;
     get isEnabled(): boolean;
@@ -1072,6 +1075,7 @@ export declare class ClrInput extends WrappedFormControl<ClrInputContainer> {
 }
 
 export declare class ClrInputContainer extends ClrAbstractContainer {
+    controllSuccessComponent: ClrControlSuccess;
 }
 
 export declare class ClrInputModule {
@@ -1207,6 +1211,7 @@ export declare class ClrPasswordContainer extends ClrAbstractContainer {
     set clrToggle(state: boolean);
     get clrToggle(): boolean;
     commonStrings: ClrCommonStringsService;
+    controllSuccessComponent: ClrControlSuccess;
     focus: boolean;
     focusService: FocusService;
     show: boolean;
@@ -1327,6 +1332,7 @@ export declare class ClrRadioContainer extends ClrAbstractContainer {
     set clrInline(value: boolean | string);
     get clrInline(): boolean | string;
     protected controlClassService: ControlClassService;
+    controllSuccessComponent: ClrControlSuccess;
     protected ifErrorService: IfErrorService;
     protected ifSuccessService: IfSuccessService;
     protected layoutService: LayoutService;
@@ -1348,6 +1354,7 @@ export declare class ClrRange extends WrappedFormControl<ClrRangeContainer> {
 }
 
 export declare class ClrRangeContainer extends ClrAbstractContainer {
+    controllSuccessComponent: ClrControlSuccess;
     set hasProgress(val: boolean);
     get hasProgress(): boolean;
     constructor(ifErrorService: IfErrorService, ifSuccessService: IfSuccessService, layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, renderer: Renderer2, idService: ControlIdService);
@@ -1377,6 +1384,7 @@ export declare class ClrSelect extends WrappedFormControl<ClrSelectContainer> {
 
 export declare class ClrSelectContainer extends ClrAbstractContainer {
     protected controlClassService: ControlClassService;
+    controllSuccessComponent: ClrControlSuccess;
     protected ifErrorService: IfErrorService;
     protected ifSuccessService: IfSuccessService;
     protected layoutService: LayoutService;
@@ -1632,6 +1640,7 @@ export declare class ClrTextarea extends WrappedFormControl<ClrTextareaContainer
 }
 
 export declare class ClrTextareaContainer extends ClrAbstractContainer {
+    controllSuccessComponent: ClrControlSuccess;
 }
 
 export declare class ClrTextareaModule {

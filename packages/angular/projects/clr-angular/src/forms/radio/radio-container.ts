@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input, Optional } from '@angular/core';
+import { Component, Input, Optional, ContentChild } from '@angular/core';
 
 import { IfErrorService } from '../common/if-error/if-error.service';
 import { ControlClassService } from '../common/providers/control-class.service';
@@ -12,6 +12,7 @@ import { NgControlService } from '../common/providers/ng-control.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
 import { LayoutService } from '../common/providers/layout.service';
 import { IfSuccessService } from '../common/if-success/if-success.service';
+import { ClrControlSuccess } from '../common/success';
 
 @Component({
   selector: 'clr-radio-container',
@@ -23,7 +24,12 @@ import { IfSuccessService } from '../common/if-success/if-success.service';
       <div class="clr-subtext-wrapper">
         <ng-content select="clr-control-helper" *ngIf="!invalid && !valid"></ng-content>
         <clr-icon *ngIf="invalid" class="clr-validate-icon" shape="exclamation-circle" aria-hidden="true"></clr-icon>
-        <clr-icon *ngIf="valid" class="clr-validate-icon" shape="check-circle" aria-hidden="true"></clr-icon>
+        <clr-icon
+          *ngIf="valid && controllSuccessComponent"
+          class="clr-validate-icon"
+          shape="check-circle"
+          aria-hidden="true"
+        ></clr-icon>
         <ng-content select="clr-control-error" *ngIf="invalid"></ng-content>
         <ng-content select="clr-control-success" *ngIf="valid"></ng-content>
       </div>
@@ -38,6 +44,7 @@ import { IfSuccessService } from '../common/if-success/if-success.service';
 })
 export class ClrRadioContainer extends ClrAbstractContainer {
   private inline = false;
+  @ContentChild(ClrControlSuccess) controllSuccessComponent: ClrControlSuccess;
 
   constructor(
     protected ifErrorService: IfErrorService,

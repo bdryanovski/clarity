@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input, Optional, Renderer2 } from '@angular/core';
+import { Component, Input, Optional, Renderer2, ContentChild } from '@angular/core';
 
 import { IfErrorService } from '../common/if-error/if-error.service';
 import { NgControlService } from '../common/providers/ng-control.service';
@@ -13,6 +13,7 @@ import { ControlIdService } from '../common/providers/control-id.service';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
 import { IfSuccessService } from '../common/if-success/if-success.service';
+import { ClrControlSuccess } from '../common/success';
 
 @Component({
   selector: 'clr-range-container',
@@ -24,7 +25,12 @@ import { IfSuccessService } from '../common/if-success/if-success.service';
         <ng-content select="[clrRange]"></ng-content>
         <span *ngIf="hasProgress" class="fill-input" [style.width]="getRangeProgressFillWidth()"></span>
         <clr-icon *ngIf="invalid" class="clr-validate-icon" shape="exclamation-circle" aria-hidden="true"></clr-icon>
-        <clr-icon *ngIf="valid" class="clr-validate-icon" shape="check-circle" aria-hidden="true"></clr-icon>
+        <clr-icon
+          *ngIf="valid && controllSuccessComponent"
+          class="clr-validate-icon"
+          shape="check-circle"
+          aria-hidden="true"
+        ></clr-icon>
       </div>
       <ng-content select="clr-control-helper" *ngIf="!invalid && !valid"></ng-content>
       <ng-content select="clr-control-error" *ngIf="invalid"></ng-content>
@@ -40,6 +46,8 @@ import { IfSuccessService } from '../common/if-success/if-success.service';
 })
 export class ClrRangeContainer extends ClrAbstractContainer {
   private _hasProgress = false;
+
+  @ContentChild(ClrControlSuccess) controllSuccessComponent: ClrControlSuccess;
 
   @Input('clrRangeHasProgress')
   set hasProgress(val: boolean) {

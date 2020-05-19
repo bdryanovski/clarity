@@ -38,6 +38,7 @@ import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-e
 import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { ViewManagerService } from './providers/view-manager.service';
 import { IfSuccessService } from '../common/if-success/if-success.service';
+import { ClrControlSuccess } from '../common/success';
 
 @Component({
   selector: 'clr-date-container',
@@ -66,7 +67,12 @@ import { IfSuccessService } from '../common/if-success/if-success.service';
           ></clr-datepicker-view-manager>
         </div>
         <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
-        <clr-icon *ngIf="valid" class="clr-validate-icon" shape="check-circle" aria-hidden="true"></clr-icon>
+        <clr-icon
+          *ngIf="valid && controllSuccessComponent"
+          class="clr-validate-icon"
+          shape="check-circle"
+          aria-hidden="true"
+        ></clr-icon>
       </div>
       <ng-content select="clr-control-helper" *ngIf="!invalid"></ng-content>
       <ng-content select="clr-control-error" *ngIf="invalid"></ng-content>
@@ -103,6 +109,8 @@ export class ClrDateContainer implements DynamicWrapper, OnDestroy, AfterViewIni
   valid = false;
   control: NgControl;
   @ContentChild(ClrLabel) label: ClrLabel;
+  @ContentChild(ClrControlSuccess) controllSuccessComponent: ClrControlSuccess;
+
   @Input('clrPosition')
   set clrPosition(position: string) {
     if (position && (ClrPopoverPositions as Record<string, any>)[position]) {

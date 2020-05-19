@@ -14,6 +14,7 @@ import { ControlClassService } from '../common/providers/control-class.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
 import { LayoutService } from '../common/providers/layout.service';
 import { IfSuccessService } from '../common/if-success/if-success.service';
+import { ClrControlSuccess } from '../common/success';
 
 @Component({
   selector: 'clr-select-container',
@@ -24,7 +25,12 @@ import { IfSuccessService } from '../common/if-success/if-success.service';
       <div [ngClass]="wrapperClass()">
         <ng-content select="[clrSelect]"></ng-content>
         <clr-icon *ngIf="invalid" class="clr-validate-icon" shape="exclamation-circle" aria-hidden="true"></clr-icon>
-        <clr-icon *ngIf="valid" class="clr-validate-icon" shape="check-circle" aria-hidden="true"></clr-icon>
+        <clr-icon
+          *ngIf="valid && controllSuccessComponent"
+          class="clr-validate-icon"
+          shape="check-circle"
+          aria-hidden="true"
+        ></clr-icon>
       </div>
       <ng-content select="clr-control-helper" *ngIf="!invalid && !valid"></ng-content>
       <ng-content select="clr-control-error" *ngIf="invalid"></ng-content>
@@ -40,6 +46,9 @@ import { IfSuccessService } from '../common/if-success/if-success.service';
 })
 export class ClrSelectContainer extends ClrAbstractContainer {
   @ContentChild(SelectMultipleControlValueAccessor, { static: false })
+  @ContentChild(ClrControlSuccess)
+  controllSuccessComponent: ClrControlSuccess;
+
   multiple: SelectMultipleControlValueAccessor;
   private multi = false;
 

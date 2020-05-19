@@ -4,7 +4,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Optional } from '@angular/core';
+import { Component, Optional, ContentChild } from '@angular/core';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { LayoutService } from '../common/providers/layout.service';
 import { ControlIdService } from '../common/providers/control-id.service';
@@ -14,6 +14,7 @@ import { NgControlService } from '../common/providers/ng-control.service';
 import { DatalistIdService } from './providers/datalist-id.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
 import { IfSuccessService } from '../common/if-success/if-success.service';
+import { ClrControlSuccess } from '../common/success';
 
 @Component({
   selector: 'clr-datalist-container',
@@ -27,7 +28,12 @@ import { IfSuccessService } from '../common/if-success/if-success.service';
           <ng-content select="datalist"></ng-content>
         </div>
         <clr-icon *ngIf="invalid" class="clr-validate-icon" shape="exclamation-circle" aria-hidden="true"></clr-icon>
-        <clr-icon *ngIf="valid" class="clr-validate-icon" shape="check-circle" aria-hidden="true"></clr-icon>
+        <clr-icon
+          *ngIf="valid && controllSuccessComponent"
+          class="clr-validate-icon"
+          shape="check-circle"
+          aria-hidden="true"
+        ></clr-icon>
       </div>
       <ng-content select="clr-control-helper" *ngIf="!invalid && !valid"></ng-content>
       <ng-content select="clr-control-error" *ngIf="invalid"></ng-content>
@@ -52,6 +58,8 @@ import { IfSuccessService } from '../common/if-success/if-success.service';
 })
 export class ClrDatalistContainer extends ClrAbstractContainer {
   focus = false;
+
+  @ContentChild(ClrControlSuccess) controllSuccessComponent: ClrControlSuccess;
 
   constructor(
     ifSuccessService: IfSuccessService,
