@@ -4,10 +4,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 import { Directive, Input, Optional, TemplateRef, ViewContainerRef } from '@angular/core';
-import { NgControl } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { NgControlService } from '../providers/ng-control.service';
+
 import { IfErrorService } from './if-error.service';
+import { NgControlService } from '../providers/ng-control.service';
+import { NgControl } from '@angular/forms';
 
 @Directive({ selector: '[clrIfError]' })
 export class ClrIfError {

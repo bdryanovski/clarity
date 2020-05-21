@@ -5,6 +5,7 @@
  */
 
 import { Subscription } from 'rxjs';
+import { Injectable } from '@angular/core';
 
 /**
  * Handle Rx Subscriptions and Unsubscriptions for better
@@ -17,6 +18,7 @@ import { Subscription } from 'rxjs';
  *
  * ngDestroy() { this.subscriptions.unsubscribe() }
  */
+@Injectable()
 export class RxSubscription {
   _subscriptions: Subscription[] = [];
 

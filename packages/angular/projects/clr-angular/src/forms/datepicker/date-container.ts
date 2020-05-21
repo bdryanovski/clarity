@@ -13,7 +13,6 @@ import {
   ElementRef,
   Input,
 } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { NgControl } from '@angular/forms';
 
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
@@ -39,6 +38,7 @@ import { ClrPopoverPositionService } from '../../utils/popover/providers/popover
 import { ViewManagerService } from './providers/view-manager.service';
 import { IfSuccessService } from '../common/if-success/if-success.service';
 import { ClrControlSuccess } from '../common/success';
+import { RxSubscription } from '../../utils/rx/rx-subscriptions';
 
 @Component({
   selector: 'clr-date-container',
@@ -131,7 +131,7 @@ export class ClrDateContainer implements DynamicWrapper, OnDestroy, AfterViewIni
     this.toggleButton = button;
   }
 
-  private subscriptions: Subscription[] = [];
+  private subscriptions = new RxSubscription();
 
   constructor(
     private toggleService: ClrPopoverToggleService,
@@ -147,42 +147,37 @@ export class ClrDateContainer implements DynamicWrapper, OnDestroy, AfterViewIni
     @Optional() private layoutService: LayoutService,
     private ngControlService: NgControlService
   ) {
-    this.subscriptions.push(
-      this.focusService.focusChange.subscribe(state => {
-        this.focus = state;
-      }),
-      this.ngControlService.controlChanges.subscribe(control => {
-        this.control = control;
-      }),
-      this.toggleService.openChange.subscribe(() => {
-        this.dateFormControlService.markAsTouched();
-      })
-    );
+    this.subscriptions.subscribe = this.focusService.focusChange.subscribe(state => {
+      this.focus = state;
+    });
+
+    this.subscriptions.subscribe = this.ngControlService.controlChanges.subscribe(control => {
+      this.control = control;
+    });
+
+    this.subscriptions.subscribe = this.toggleService.openChange.subscribe(() => {
+      this.dateFormControlService.markAsTouched();
+    });
   }
 
   ngOnInit() {
-    this.subscriptions.push(
-      this.ifErrorService.statusChanges.subscribe(invalid => {
-        this.invalid = invalid;
-      })
-    );
-    this.subscriptions.push(
-      this.ifSuccessService.statusChanges.subscribe(valid => {
-        this.valid = valid;
-      })
-    );
+    this.subscriptions.subscribe = this.ifErrorService.statusChanges.subscribe(invalid => {
+      this.invalid = invalid;
+    });
+
+    this.subscriptions.subscribe = this.ifSuccessService.statusChanges.subscribe(valid => {
+      this.valid = valid;
+    });
   }
 
   ngAfterViewInit(): void {
-    this.subscriptions.push(
-      this.toggleService.openChange.subscribe(open => {
-        if (open) {
-          this.initializeCalendar();
-        } else {
-          this.toggleButton.nativeElement.focus();
-        }
-      })
-    );
+    this.subscriptions.subscribe = this.toggleService.openChange.subscribe(open => {
+      if (open) {
+        this.initializeCalendar();
+      } else {
+        this.toggleButton.nativeElement.focus();
+      }
+    });
   }
 
   /**
@@ -227,6 +222,6 @@ export class ClrDateContainer implements DynamicWrapper, OnDestroy, AfterViewIni
    * Unsubscribe from subscriptions.
    */
   ngOnDestroy() {
-    this.subscriptions.map(sub => sub.unsubscribe());
+    this.subscriptions.unsubscribe();
   }
 }

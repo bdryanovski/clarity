@@ -103,6 +103,8 @@ export class ClrPasswordContainer extends ClrAbstractContainer {
     public commonStrings: ClrCommonStringsService
   ) {
     super(ifErrorService, ifSuccessService, layoutService, controlClassService, ngControlService);
+
+    /* The unsubscribe is handle inside the ClrAbstractContainer */
     this.subscriptions.subscribe = this.focusService.focusChange.subscribe(state => {
       this.focus = state;
     });
