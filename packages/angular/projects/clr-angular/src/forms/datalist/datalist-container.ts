@@ -71,6 +71,6 @@ export class ClrDatalistContainer extends ClrAbstractContainer {
   ) {
     super(ifErrorService, ifSuccessService, layoutService, controlClassService, ngControlService);
 
-    this.subscriptions.subscribe = this.focusService.focusChange.subscribe(state => (this.focus = state));
+    this.subscriptions.push(this.focusService.focusChange.subscribe(state => (this.focus = state)));
   }
 }

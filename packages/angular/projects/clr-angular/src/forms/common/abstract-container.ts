@@ -14,11 +14,11 @@ import { LayoutService } from './providers/layout.service';
 import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 import { ClrLabel } from './label';
 import { ControlClassService } from './providers/control-class.service';
-import { RxSubscription } from '../../utils/rx/rx-subscriptions';
+import { Subscription } from 'rxjs';
 
 @Directive()
 export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy {
-  protected subscriptions = new RxSubscription();
+  protected subscriptions: Subscription[] = [];
   invalid = false;
   valid = false;
   _dynamic = false;
@@ -33,17 +33,23 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy 
     protected controlClassService: ControlClassService,
     protected ngControlService: NgControlService
   ) {
-    this.subscriptions.subscribe = this.ifErrorService.statusChanges.subscribe(invalid => {
-      this.invalid = invalid;
-    });
+    this.subscriptions.push(
+      this.ifErrorService.statusChanges.subscribe(invalid => {
+        this.invalid = invalid;
+      })
+    );
 
-    this.subscriptions.subscribe = this.ifSuccessService.statusChanges.subscribe(valid => {
-      this.valid = valid;
-    });
+    this.subscriptions.push(
+      this.ifSuccessService.statusChanges.subscribe(valid => {
+        this.valid = valid;
+      })
+    );
 
-    this.subscriptions.subscribe = this.ngControlService.controlChanges.subscribe(control => {
-      this.control = control;
-    });
+    this.subscriptions.push(
+      this.ngControlService.controlChanges.subscribe(control => {
+        this.control = control;
+      })
+    );
   }
 
   controlClass() {
@@ -55,6 +61,6 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy 
   }
 
   ngOnDestroy() {
-    this.subscriptions.unsubscribe();
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }

@@ -6,13 +6,12 @@
 
 import { Injectable, OnDestroy } from '@angular/core';
 import { NgControl } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
 import { NgControlService } from '../providers/ng-control.service';
-import { RxSubscription } from '../../../utils/rx/rx-subscriptions';
 
 @Injectable()
 export class IfSuccessService implements OnDestroy {
-  private subscriptions = new RxSubscription();
+  private subscriptions: Subscription[] = [];
   private control: NgControl;
 
   // Implement our own status changes observable, since Angular controls don't
@@ -24,19 +23,23 @@ export class IfSuccessService implements OnDestroy {
 
   constructor(private ngControlService: NgControlService) {
     // Wait for the control to be available
-    this.subscriptions.subscribe = this.ngControlService.controlChanges.subscribe(control => {
-      if (control) {
-        this.control = control;
-        this.listenForChanges();
-      }
-    });
+    this.subscriptions.push(
+      this.ngControlService.controlChanges.subscribe(control => {
+        if (control) {
+          this.control = control;
+          this.listenForChanges();
+        }
+      })
+    );
   }
 
   // Subscribe to the status change events, only after touched and emit the control
   private listenForChanges() {
-    this.subscriptions.subscribe = this.control.statusChanges.subscribe(() => {
-      this.sendValidity();
-    });
+    this.subscriptions.push(
+      this.control.statusChanges.subscribe(() => {
+        this.sendValidity();
+      })
+    );
   }
 
   private sendValidity() {
@@ -52,6 +55,6 @@ export class IfSuccessService implements OnDestroy {
 
   // Clean up subscriptions
   ngOnDestroy() {
-    this.subscriptions.unsubscribe();
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }

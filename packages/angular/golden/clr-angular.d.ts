@@ -55,7 +55,7 @@ export declare abstract class ClrAbstractContainer implements DynamicWrapper, On
     label: ClrLabel;
     protected layoutService: LayoutService;
     protected ngControlService: NgControlService;
-    protected subscriptions: RxSubscription;
+    protected subscriptions: Subscription[];
     valid: boolean;
     constructor(ifErrorService: IfErrorService, ifSuccessService: IfSuccessService, layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
     addGrid(): boolean;

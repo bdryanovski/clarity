@@ -7,11 +7,11 @@ import { Directive, Input, Optional, TemplateRef, ViewContainerRef } from '@angu
 import { NgControl } from '@angular/forms';
 import { NgControlService } from '../providers/ng-control.service';
 import { IfSuccessService } from './if-success.service';
-import { RxSubscription } from '../../../utils/rx/rx-subscriptions';
+import { Subscription } from 'rxjs';
 
 @Directive({ selector: '[clrIfSuccess]' })
 export class ClrIfSuccess {
-  private subscriptions = new RxSubscription();
+  private subscriptions: Subscription[] = [];
   private displayed = false;
   private control: NgControl;
 
@@ -27,17 +27,21 @@ export class ClrIfSuccess {
       throw new Error('clrIfSuccess can only be used within a form control container element like clr-input-container');
     }
 
-    this.subscriptions.subscribe = this.ngControlService.controlChanges.subscribe(control => {
-      this.control = control;
-    });
+    this.subscriptions.push(
+      this.ngControlService.controlChanges.subscribe(control => {
+        this.control = control;
+      })
+    );
 
-    this.subscriptions.subscribe = this.ifSuccessService.statusChanges.subscribe(state => {
-      this.displaySuccess(state);
-    });
+    this.subscriptions.push(
+      this.ifSuccessService.statusChanges.subscribe(state => {
+        this.displaySuccess(state);
+      })
+    );
   }
 
   ngOnDestroy() {
-    this.subscriptions.unsubscribe();
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
   private displaySuccess(valid: boolean) {

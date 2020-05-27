@@ -104,12 +104,12 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
 
     it('injects the ifErrorService and subscribes', () => {
       expect(ifErrorService).toBeTruthy();
-      expect(container.subscriptions.subscriptions[0]).toBeTruthy();
+      expect(container.subscriptions[0]).toBeTruthy();
     });
 
     it('injects the IfSuccessService and subscribes', () => {
       expect(ifSuccessService).toBeTruthy();
-      expect(container.subscriptions.subscriptions[1]).toBeTruthy();
+      expect(container.subscriptions[1]).toBeTruthy();
     });
 
     it('projects the label as first child', () => {
