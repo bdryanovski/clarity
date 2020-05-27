@@ -2,5 +2,4 @@
   "files.exclude": {
     "**/*.element.css.ts": true
   },
-  "typescript.tsdk": "node_modules/typescript/lib"
 }
