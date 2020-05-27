@@ -10,23 +10,29 @@ import { LayoutService } from './layout.service';
 const CLASS_ERROR = 'clr-error';
 const CLASS_SUCCESS = 'clr-success';
 
+export type ClrControlClassOptions = {
+  invalid?: boolean;
+  valid?: boolean;
+  grid?: boolean;
+  additional?: string;
+};
+
 @Injectable()
 export class ControlClassService {
   className = '';
 
   constructor(@Optional() private layoutService: LayoutService) {}
 
-  // @TODO: rework how we pass arguments
-  controlClass(invalid = false, valid = false, grid = false, additional = '') {
-    const controlClasses = [this.className, additional];
-    if (invalid && !valid) {
+  controlClass(options: ClrControlClassOptions = { invalid: false, valid: false, grid: false, additional: '' }) {
+    const controlClasses = [this.className, options.additional];
+    if (options.invalid && !options.valid) {
       controlClasses.push(CLASS_ERROR);
     }
-    if (valid && !invalid) {
+    if (options.valid && !options.invalid) {
       controlClasses.push(CLASS_SUCCESS);
     }
 
-    if (grid && this.layoutService && this.className.indexOf('clr-col') === -1) {
+    if (options.grid && this.layoutService && this.className.indexOf('clr-col') === -1) {
       controlClasses.push(`clr-col-md-${this.layoutService.maxLabelSize - this.layoutService.labelSize} clr-col-12`);
     }
     return controlClasses.join(' ').trim();

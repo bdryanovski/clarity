@@ -53,7 +53,7 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy 
   }
 
   controlClass() {
-    return this.controlClassService.controlClass(this.invalid, this.valid, this.addGrid());
+    return this.controlClassService.controlClass({ invalid: this.invalid, valid: this.valid, grid: this.addGrid() });
   }
 
   addGrid() {

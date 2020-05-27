@@ -196,7 +196,7 @@ export class ClrDateContainer implements DynamicWrapper, OnDestroy, AfterViewIni
    * Returns the classes to apply to the control
    */
   controlClass() {
-    return this.controlClassService.controlClass(this.invalid, this.valid, this.addGrid());
+    return this.controlClassService.controlClass({ invalid: this.invalid, valid: this.valid, grid: this.addGrid() });
   }
 
   /**
