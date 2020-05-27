@@ -22,7 +22,7 @@ import { ClrControlSuccess } from '../common/success';
     <div class="clr-control-container" [class.clr-control-inline]="clrInline" [ngClass]="controlClass()">
       <ng-content select="clr-checkbox-wrapper,clr-toggle-wrapper"></ng-content>
       <div class="clr-subtext-wrapper">
-        <ng-content select="clr-control-helper" *ngIf="!invalid && !valid"></ng-content>
+        <ng-content select="clr-control-helper" *ngIf="help"></ng-content>
         <clr-icon *ngIf="invalid" class="clr-validate-icon" shape="exclamation-circle" aria-hidden="true"></clr-icon>
         <clr-icon
           *ngIf="valid && controllSuccessComponent"

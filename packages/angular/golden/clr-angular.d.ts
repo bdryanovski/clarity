@@ -49,6 +49,7 @@ export declare abstract class ClrAbstractContainer implements DynamicWrapper, On
     _dynamic: boolean;
     control: NgControl;
     protected controlClassService: ControlClassService;
+    get help(): boolean;
     protected ifErrorService: IfErrorService;
     protected ifSuccessService: IfSuccessService;
     invalid: boolean;

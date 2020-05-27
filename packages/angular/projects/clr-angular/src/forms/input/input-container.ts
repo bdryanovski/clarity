@@ -30,7 +30,7 @@ import { ClrControlSuccess } from '../common/success';
           aria-hidden="true"
         ></clr-icon>
       </div>
-      <ng-content select="clr-control-helper" *ngIf="!invalid && !valid"></ng-content>
+      <ng-content select="clr-control-helper" *ngIf="help"></ng-content>
       <ng-content select="clr-control-error" *ngIf="invalid"></ng-content>
       <ng-content select="clr-control-success" *ngIf="valid"></ng-content>
     </div>

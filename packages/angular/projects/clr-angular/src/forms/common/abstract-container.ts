@@ -26,6 +26,10 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy 
   label: ClrLabel;
   control: NgControl;
 
+  get help() {
+    return this.valid === false && this.invalid === false;
+  }
+
   constructor(
     protected ifErrorService: IfErrorService,
     protected ifSuccessService: IfSuccessService,
