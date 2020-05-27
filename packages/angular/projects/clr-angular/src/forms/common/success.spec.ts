@@ -9,7 +9,7 @@ import { By } from '@angular/platform-browser';
 import { ControlIdService } from './providers/control-id.service';
 import { ClrControlSuccess } from './success';
 
-@Component({ template: `<clr-control-success>Test error</clr-control-success>` })
+@Component({ template: `<clr-control-success>Test success message</clr-control-success>` })
 class SimpleTest {}
 
 @Component({ template: `<clr-control-success aria-describedby="hello"></clr-control-success>` })
@@ -18,6 +18,7 @@ class ExplicitAriaTest {}
 export default function (): void {
   describe('ClrControlSuccess', () => {
     let fixture: ComponentFixture<SimpleTest>;
+    let element: HTMLElement;
 
     beforeEach(function () {
       TestBed.configureTestingModule({
@@ -26,25 +27,19 @@ export default function (): void {
       });
       fixture = TestBed.createComponent(SimpleTest);
       fixture.detectChanges();
+      element = fixture.debugElement.query(By.directive(ClrControlSuccess)).nativeElement;
     });
 
     it('projects content', function () {
-      expect(fixture.debugElement.query(By.directive(ClrControlSuccess)).nativeElement.innerText).toContain(
-        'Test error'
-      );
+      expect(element.innerText).toContain('Test success message');
     });
 
     it('adds the .clr-subtext class to host', function () {
-      expect(
-        fixture.debugElement.query(By.directive(ClrControlSuccess)).nativeElement.classList.contains('clr-subtext')
-      ).toBeTrue();
+      expect(element.classList.contains('clr-subtext')).toBeTrue();
     });
 
-    it('leaves the for aria-describedby untouched if it exists', function () {
-      const explicitFixture = TestBed.createComponent(ExplicitAriaTest);
-      explicitFixture.detectChanges();
-      const message = explicitFixture.nativeElement.querySelector('clr-control-success');
-      expect(message.getAttribute('aria-describedby')).toBe('hello');
+    it('should add id to host', function () {
+      expect(element.getAttribute('id')).toContain('-success');
     });
   });
 }

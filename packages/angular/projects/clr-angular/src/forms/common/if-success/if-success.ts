@@ -46,7 +46,7 @@ export class ClrIfSuccess {
 
   private displaySuccess(valid: boolean) {
     if (valid && !this.displayed) {
-      this.container.createEmbeddedView(this.template, { success: !this.control.getError(this.success) });
+      this.container.createEmbeddedView(this.template);
       this.displayed = true;
     } else if (!valid) {
       this.container.clear();

@@ -5,7 +5,6 @@
  */
 
 import { Component, Optional } from '@angular/core';
-import { ControlClassService } from './providers/control-class.service';
 import { ControlIdService } from './providers/control-id.service';
 
 @Component({
@@ -17,8 +16,5 @@ import { ControlIdService } from './providers/control-id.service';
   },
 })
 export class ClrControlSuccess {
-  constructor(
-    @Optional() public controlIdService: ControlIdService,
-    @Optional() public controlClassService: ControlClassService
-  ) {}
+  constructor(@Optional() public controlIdService: ControlIdService) {}
 }

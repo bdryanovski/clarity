@@ -19,6 +19,7 @@ class ExplicitAriaTest {}
 export default function (): void {
   describe('ClrControlError', () => {
     let fixture: ComponentFixture<SimpleTest>, announceSpyOn;
+    let element: HTMLElement;
 
     beforeEach(function () {
       TestBed.configureTestingModule({
@@ -27,8 +28,10 @@ export default function (): void {
       });
       fixture = TestBed.createComponent(SimpleTest);
       fixture.detectChanges();
+      element = fixture.debugElement.query(By.directive(ClrControlError)).nativeElement;
     });
 
+    /** @deprecated since 3.0, remove in 4.0 - ariaLiveService */
     it('expect to call ClrAriaLiveService.announce', function () {
       fixture = TestBed.createComponent(SimpleTest);
       const ariaLiveService = fixture.debugElement
@@ -40,20 +43,15 @@ export default function (): void {
     });
 
     it('projects content', function () {
-      expect(fixture.debugElement.query(By.directive(ClrControlError)).nativeElement.innerText).toContain('Test error');
+      expect(element.innerText).toContain('Test error');
     });
 
     it('adds the .clr-subtext class to host', function () {
-      expect(
-        fixture.debugElement.query(By.directive(ClrControlError)).nativeElement.classList.contains('clr-subtext')
-      ).toBeTrue();
+      expect(element.classList.contains('clr-subtext')).toBeTrue();
     });
 
-    it('leaves the for aria-describedby untouched if it exists', function () {
-      const explicitFixture = TestBed.createComponent(ExplicitAriaTest);
-      explicitFixture.detectChanges();
-      const message = explicitFixture.nativeElement.querySelector('clr-control-error');
-      expect(message.getAttribute('aria-describedby')).toBe('hello');
+    it('should add id to host', function () {
+      expect(element.getAttribute('id')).toContain('-error');
     });
   });
 }

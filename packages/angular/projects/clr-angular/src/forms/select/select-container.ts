@@ -45,10 +45,10 @@ import { ClrControlSuccess } from '../common/success';
   providers: [IfErrorService, IfSuccessService, NgControlService, ControlIdService, ControlClassService],
 })
 export class ClrSelectContainer extends ClrAbstractContainer {
-  @ContentChild(SelectMultipleControlValueAccessor, { static: false })
   @ContentChild(ClrControlSuccess)
   controllSuccessComponent: ClrControlSuccess;
 
+  @ContentChild(SelectMultipleControlValueAccessor, { static: false })
   multiple: SelectMultipleControlValueAccessor;
   private multi = false;
 

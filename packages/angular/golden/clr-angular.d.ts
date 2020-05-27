@@ -394,9 +394,8 @@ export declare class ClrControlHelper {
 }
 
 export declare class ClrControlSuccess {
-    controlClassService: ControlClassService;
     controlIdService: ControlIdService;
-    constructor(controlIdService: ControlIdService, controlClassService: ControlClassService);
+    constructor(controlIdService: ControlIdService);
 }
 
 export declare class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, OnDestroy {
