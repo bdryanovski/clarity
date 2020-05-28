@@ -9,15 +9,21 @@ import { NgControl } from '@angular/forms';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { NgControlService } from '../providers/ng-control.service';
 
+export enum CONTROL_STATE {
+  UNTOUCHED = 'UNTOUCHED',
+  TOUCHED = 'TOUCHED',
+  VALID = 'VALID',
+  INVALID = 'INVALID',
+}
+
 @Injectable()
-export class IfSuccessService implements OnDestroy {
+export class IfControlStateService implements OnDestroy {
   private subscriptions: Subscription[] = [];
   private control: NgControl;
 
   // Implement our own status changes observable, since Angular controls don't
-  // fire on events like blur, and we want to return the boolean state instead of a string
-  private _statusChanges: Subject<boolean> = new Subject();
-  get statusChanges(): Observable<boolean> {
+  private _statusChanges: Subject<CONTROL_STATE> = new Subject();
+  get statusChanges(): Observable<CONTROL_STATE> {
     return this._statusChanges.asObservable();
   }
 
@@ -27,23 +33,34 @@ export class IfSuccessService implements OnDestroy {
       this.ngControlService.controlChanges.subscribe(control => {
         if (control) {
           this.control = control;
-          this.listenForChanges();
+          // Subscribe to the status change events, only after touched
+          // and emit the control
+          this.subscriptions.push(
+            this.control.statusChanges.subscribe(() => {
+              this.sendValidity();
+            })
+          );
         }
       })
     );
   }
 
-  // Subscribe to the status change events, only after touched and emit the control
-  private listenForChanges() {
-    this.subscriptions.push(
-      this.control.statusChanges.subscribe(() => {
-        this.sendValidity();
-      })
-    );
-  }
-
   private sendValidity() {
-    this._statusChanges.next(this.control.touched && this.control.valid);
+    let state = CONTROL_STATE.UNTOUCHED;
+    if (this.control.touched) {
+      state = CONTROL_STATE.TOUCHED;
+      // These status values are mutually exclusive, so a control
+      // cannot be both valid AND invalid or invalid AND disabled.
+      switch (this.control.status) {
+        case 'VALID':
+          state = CONTROL_STATE.VALID;
+          break;
+        case 'INVALID':
+          state = CONTROL_STATE.INVALID;
+          break;
+      }
+    }
+    this._statusChanges.next(state);
   }
 
   // Allows a control to push a status check upstream, such as on blur

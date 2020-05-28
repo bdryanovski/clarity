@@ -5,6 +5,7 @@
  */
 import { ControlClassService } from './control-class.service';
 import { LayoutService } from './layout.service';
+import { CONTROL_STATE } from '../if-control-state/if-control-state.service';
 
 export default function (): void {
   describe('ControlClassService', function () {
@@ -20,36 +21,26 @@ export default function (): void {
     });
 
     it('should return clr-error when invalid', function () {
-      expect(controlClassService.controlClass({ invalid: true })).toBe('clr-error');
+      expect(controlClassService.controlClass({ state: CONTROL_STATE.INVALID })).toBe('clr-error');
     });
 
     it('should return clr-success when valid', function () {
-      expect(controlClassService.controlClass({ invalid: false, valid: true })).toBe('clr-success');
+      expect(controlClassService.controlClass({ state: CONTROL_STATE.VALID })).toBe('clr-success');
     });
 
     it('should return grid classes when using grid', function () {
-      expect(controlClassService.controlClass({ invalid: false, valid: false, grid: true })).toBe(
-        'clr-col-md-10 clr-col-12'
-      );
-    });
-
-    it('should return grid classes when using grid', function () {
-      expect(controlClassService.controlClass({ invalid: false, valid: false, grid: true })).toBe(
-        'clr-col-md-10 clr-col-12'
-      );
+      expect(controlClassService.controlClass({ grid: true })).toBe('clr-col-md-10 clr-col-12');
     });
 
     it('should return error and grid classes when invalid and using grid', function () {
-      expect(controlClassService.controlClass({ invalid: true, valid: false, grid: true })).toBe(
+      expect(controlClassService.controlClass({ state: CONTROL_STATE.INVALID, grid: true })).toBe(
         'clr-error clr-col-md-10 clr-col-12'
       );
     });
 
     it('should not add grid classes if already present ', function () {
       controlClassService.className = 'clr-col-md-3 clr-col-12';
-      expect(controlClassService.controlClass({ invalid: false, valid: false, grid: true })).toBe(
-        'clr-col-md-3 clr-col-12'
-      );
+      expect(controlClassService.controlClass({ grid: true })).toBe('clr-col-md-3 clr-col-12');
     });
 
     it('should init the control class', function () {
@@ -69,23 +60,23 @@ export default function (): void {
 
     it('should return any classes provided by default', function () {
       controlClassService.className = 'test-class';
-      expect(controlClassService.controlClass({ invalid: false, valid: false, grid: false })).toContain('test-class');
+      expect(controlClassService.controlClass({ grid: false })).toContain('test-class');
     });
 
     it('should return any additional classes passed by the control', function () {
       controlClassService.className = 'test-class';
       layoutService.labelSize = 2;
-      expect(
-        controlClassService.controlClass({ invalid: false, valid: false, grid: false, additional: 'extra-class' })
-      ).toBe('test-class extra-class');
+      expect(controlClassService.controlClass({ grid: false, additional: 'extra-class' })).toBe(
+        'test-class extra-class'
+      );
     });
 
     it('should return appropiate col size classes for grid layouts', function () {
       controlClassService.className = 'test-class';
       layoutService.labelSize = 3;
-      expect(
-        controlClassService.controlClass({ invalid: false, valid: false, grid: true, additional: 'extra-class' })
-      ).toBe('test-class extra-class clr-col-md-9 clr-col-12');
+      expect(controlClassService.controlClass({ grid: true, additional: 'extra-class' })).toBe(
+        'test-class extra-class clr-col-md-9 clr-col-12'
+      );
     });
   });
 }

@@ -6,13 +6,12 @@
 
 import { Component, Input, Optional, ContentChild } from '@angular/core';
 
-import { IfErrorService } from '../common/if-error/if-error.service';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { NgControlService } from '../common/providers/ng-control.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
 import { LayoutService } from '../common/providers/layout.service';
-import { IfSuccessService } from '../common/if-success/if-success.service';
 import { ClrControlSuccess } from '../common/success';
+import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 
 @Component({
   selector: 'clr-radio-container',
@@ -40,20 +39,19 @@ import { ClrControlSuccess } from '../common/success';
     '[class.clr-form-control-disabled]': 'control?.disabled',
     '[class.clr-row]': 'addGrid()',
   },
-  providers: [NgControlService, IfSuccessService, ControlClassService, IfErrorService],
+  providers: [NgControlService, IfControlStateService, ControlClassService],
 })
 export class ClrRadioContainer extends ClrAbstractContainer {
   private inline = false;
   @ContentChild(ClrControlSuccess) controllSuccessComponent: ClrControlSuccess;
 
   constructor(
-    protected ifErrorService: IfErrorService,
-    protected ifSuccessService: IfSuccessService,
     @Optional() protected layoutService: LayoutService,
     protected controlClassService: ControlClassService,
-    protected ngControlService: NgControlService
+    protected ngControlService: NgControlService,
+    protected ifControlStateService: IfControlStateService
   ) {
-    super(ifErrorService, ifSuccessService, layoutService, controlClassService, ngControlService);
+    super(ifControlStateService, layoutService, controlClassService, ngControlService);
   }
 
   /*

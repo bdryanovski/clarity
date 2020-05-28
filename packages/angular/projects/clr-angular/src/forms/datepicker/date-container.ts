@@ -17,7 +17,6 @@ import { NgControl } from '@angular/forms';
 
 import { ClrPopoverToggleService } from '../../utils/popover/providers/popover-toggle.service';
 import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
-import { IfErrorService } from '../common/if-error/if-error.service';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { FocusService } from '../common/providers/focus.service';
@@ -36,9 +35,9 @@ import { ClrPopoverPosition } from '../../utils/popover/interfaces/popover-posit
 import { ClrPopoverEventsService } from '../../utils/popover/providers/popover-events.service';
 import { ClrPopoverPositionService } from '../../utils/popover/providers/popover-position.service';
 import { ViewManagerService } from './providers/view-manager.service';
-import { IfSuccessService } from '../common/if-success/if-success.service';
 import { ClrControlSuccess } from '../common/success';
 import { Subscription } from 'rxjs';
+import { IfControlStateService, CONTROL_STATE } from '../common/if-control-state/if-control-state.service';
 
 @Component({
   selector: 'clr-date-container',
@@ -74,7 +73,7 @@ import { Subscription } from 'rxjs';
           aria-hidden="true"
         ></clr-icon>
       </div>
-      <ng-content select="clr-control-helper" *ngIf="!invalid"></ng-content>
+      <ng-content select="clr-control-helper" *ngIf="!invalid && !valid"></ng-content>
       <ng-content select="clr-control-error" *ngIf="invalid"></ng-content>
       <ng-content select="clr-control-success" *ngIf="valid"></ng-content>
     </div>
@@ -85,8 +84,6 @@ import { Subscription } from 'rxjs';
     ClrPopoverEventsService,
     ClrPopoverPositionService,
     LocaleHelperService,
-    IfErrorService,
-    IfSuccessService,
     ControlClassService,
     FocusService,
     NgControlService,
@@ -95,6 +92,7 @@ import { Subscription } from 'rxjs';
     DatepickerEnabledService,
     DateFormControlService,
     ViewManagerService,
+    IfControlStateService,
   ],
   host: {
     '[class.clr-form-control-disabled]': 'isInputDateDisabled',
@@ -107,6 +105,7 @@ export class ClrDateContainer implements DynamicWrapper, OnDestroy, AfterViewIni
   invalid = false;
   focus = false;
   valid = false;
+  state: CONTROL_STATE;
   control: NgControl;
   @ContentChild(ClrLabel) label: ClrLabel;
   @ContentChild(ClrControlSuccess) controllSuccessComponent: ClrControlSuccess;
@@ -139,13 +138,12 @@ export class ClrDateContainer implements DynamicWrapper, OnDestroy, AfterViewIni
     private datepickerEnabledService: DatepickerEnabledService,
     private dateFormControlService: DateFormControlService,
     public commonStrings: ClrCommonStringsService,
-    private ifErrorService: IfErrorService,
-    private ifSuccessService: IfSuccessService,
     private focusService: FocusService,
     private viewManagerService: ViewManagerService,
     private controlClassService: ControlClassService,
     @Optional() private layoutService: LayoutService,
-    private ngControlService: NgControlService
+    private ngControlService: NgControlService,
+    private ifControlStateService: IfControlStateService
   ) {
     this.subscriptions.push(
       this.focusService.focusChange.subscribe(state => {
@@ -168,14 +166,10 @@ export class ClrDateContainer implements DynamicWrapper, OnDestroy, AfterViewIni
 
   ngOnInit() {
     this.subscriptions.push(
-      this.ifErrorService.statusChanges.subscribe(invalid => {
-        this.invalid = invalid;
-      })
-    );
-
-    this.subscriptions.push(
-      this.ifSuccessService.statusChanges.subscribe(valid => {
-        this.valid = valid;
+      this.ifControlStateService.statusChanges.subscribe((state: CONTROL_STATE) => {
+        this.state = state;
+        this.valid = CONTROL_STATE.VALID === state;
+        this.invalid = CONTROL_STATE.INVALID === state;
       })
     );
   }
@@ -196,7 +190,7 @@ export class ClrDateContainer implements DynamicWrapper, OnDestroy, AfterViewIni
    * Returns the classes to apply to the control
    */
   controlClass() {
-    return this.controlClassService.controlClass({ invalid: this.invalid, valid: this.valid, grid: this.addGrid() });
+    return this.controlClassService.controlClass({ state: this.state, grid: this.addGrid() });
   }
 
   /**

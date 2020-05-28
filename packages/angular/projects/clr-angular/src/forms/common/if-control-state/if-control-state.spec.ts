@@ -12,27 +12,26 @@ import { ClrInputContainer } from '../../input/input-container';
 import { NgControlService } from '../providers/ng-control.service';
 import { ClrControlSuccess } from '../success';
 import { ClrIfSuccess } from './if-success';
-import { IfSuccessService } from './if-success.service';
+import { IfControlStateService } from './if-control-state.service';
 
 const successMessage = 'SUCCESS_MESSAGE';
 const minLengthMessage = 'MIN_LENGTH_MESSAGE';
-const maxLengthMessage = 'MAX_LENGTH_MESSAGE';
 
 @Component({ template: `<div *clrIfSuccess></div>` })
 class InvalidUseTest {}
 
 @Component({
   template: ` <clr-control-success *clrIfSuccess>${successMessage}</clr-control-success> `,
-  providers: [IfSuccessService, NgControlService],
+  providers: [IfControlStateService, NgControlService],
 })
-class GeneralErrorTest {}
+class GeneralSuccessTest {}
 
 @Component({
   template: `
     <clr-control-success *clrIfSuccess="'required'">${successMessage}</clr-control-success>
     <clr-control-success *clrIfSuccess="'minlength'">${minLengthMessage}</clr-control-success>
   `,
-  providers: [IfSuccessService, NgControlService],
+  providers: [IfControlStateService, NgControlService],
 })
 class SpecificSuccessTest {}
 
@@ -49,17 +48,17 @@ export default function (): void {
     });
 
     describe('general success', () => {
-      let fixture, ifSuccessService, ngControlService;
+      let fixture, ifControlStateService, ngControlService;
 
       beforeEach(() => {
         TestBed.configureTestingModule({
           imports: [ClrIconModule, FormsModule],
-          declarations: [ClrInput, ClrControlSuccess, ClrInputContainer, ClrIfSuccess, GeneralErrorTest],
+          declarations: [ClrInput, ClrControlSuccess, ClrInputContainer, ClrIfSuccess, GeneralSuccessTest],
         });
-        fixture = TestBed.createComponent(GeneralErrorTest);
+        fixture = TestBed.createComponent(GeneralSuccessTest);
         fixture.detectChanges();
         ngControlService = fixture.debugElement.injector.get(NgControlService);
-        ifSuccessService = fixture.debugElement.injector.get(IfSuccessService);
+        ifControlStateService = fixture.debugElement.injector.get(IfControlStateService);
       });
 
       it('hides the success initially', () => {
@@ -71,14 +70,14 @@ export default function (): void {
         const control = new FormControl('abc', Validators.required);
         control.markAsTouched();
         ngControlService.setControl(control);
-        ifSuccessService.triggerStatusChange();
+        ifControlStateService.triggerStatusChange();
         fixture.detectChanges();
         expect(fixture.nativeElement.innerHTML).toContain(successMessage);
       });
     });
 
     describe('specific success', () => {
-      let fixture, ifSuccessService, ngControlService;
+      let fixture, ifControlStateService, ngControlService;
 
       beforeEach(() => {
         TestBed.configureTestingModule({
@@ -88,7 +87,7 @@ export default function (): void {
         fixture = TestBed.createComponent(SpecificSuccessTest);
         fixture.detectChanges();
         ngControlService = fixture.debugElement.injector.get(NgControlService);
-        ifSuccessService = fixture.debugElement.injector.get(IfSuccessService);
+        ifControlStateService = fixture.debugElement.injector.get(IfControlStateService);
       });
 
       it('hides the success initially', () => {
@@ -100,7 +99,7 @@ export default function (): void {
         const control = new FormControl('abcde', [Validators.required, Validators.minLength(5)]);
         control.markAsTouched();
         ngControlService.setControl(control);
-        ifSuccessService.triggerStatusChange();
+        ifControlStateService.triggerStatusChange();
         fixture.detectChanges();
         expect(fixture.nativeElement.innerHTML).toContain(successMessage);
       });

@@ -4,8 +4,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export * from './if-error/if-error';
-export * from './if-success/if-success';
+export * from './if-control-state/if-error';
+export * from './if-control-state/if-success';
 export * from './error';
 export * from './success';
 export * from './form';

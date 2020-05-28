@@ -4,10 +4,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 import { Directive, Input, Optional, TemplateRef, ViewContainerRef } from '@angular/core';
-import { NgControl } from '@angular/forms';
-import { NgControlService } from '../providers/ng-control.service';
-import { IfSuccessService } from './if-success.service';
 import { Subscription } from 'rxjs';
+
+import { NgControlService } from '../providers/ng-control.service';
+import { NgControl } from '@angular/forms';
+import { IfControlStateService, CONTROL_STATE } from './if-control-state.service';
 
 @Directive({ selector: '[clrIfSuccess]' })
 export class ClrIfSuccess {
@@ -15,16 +16,16 @@ export class ClrIfSuccess {
   private displayed = false;
   private control: NgControl;
 
-  @Input('clrIfSuccess') success: string;
+  @Input('clrIfSuccess') error: string;
 
   constructor(
-    @Optional() private ifSuccessService: IfSuccessService,
+    @Optional() private ifControlStateService: IfControlStateService,
     @Optional() private ngControlService: NgControlService,
     private template: TemplateRef<any>,
     private container: ViewContainerRef
   ) {
-    if (!this.ifSuccessService) {
-      throw new Error('clrIfSuccess can only be used within a form control container element like clr-input-container');
+    if (!this.ifControlStateService) {
+      throw new Error('ClrIfSuccess can only be used within a form control container element like clr-input-container');
     }
 
     this.subscriptions.push(
@@ -32,25 +33,29 @@ export class ClrIfSuccess {
         this.control = control;
       })
     );
-
     this.subscriptions.push(
-      this.ifSuccessService.statusChanges.subscribe(state => {
+      this.ifControlStateService.statusChanges.subscribe((state: CONTROL_STATE) => {
         this.displaySuccess(state);
       })
     );
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  private displaySuccess(valid: boolean) {
-    if (valid && !this.displayed) {
+  /**
+   *
+   * @param state CONTROL_STATE
+   */
+  private displaySuccess(state: CONTROL_STATE) {
+    const VALID = CONTROL_STATE.VALID === state;
+
+    if (VALID && !this.displayed) {
       this.container.createEmbeddedView(this.template);
-      this.displayed = true;
-    } else if (!valid) {
+    } else if (!VALID) {
       this.container.clear();
-      this.displayed = false;
     }
+    this.displayed = VALID;
   }
 }

@@ -7,45 +7,44 @@
 import { ContentChild, Directive, OnDestroy, Optional } from '@angular/core';
 import { NgControl } from '@angular/forms';
 
-import { IfErrorService } from './if-error/if-error.service';
-import { IfSuccessService } from './if-success/if-success.service';
 import { NgControlService } from './providers/ng-control.service';
 import { LayoutService } from './providers/layout.service';
 import { DynamicWrapper } from '../../utils/host-wrapping/dynamic-wrapper';
 import { ClrLabel } from './label';
 import { ControlClassService } from './providers/control-class.service';
 import { Subscription } from 'rxjs';
+import { IfControlStateService, CONTROL_STATE } from './if-control-state/if-control-state.service';
 
 @Directive()
 export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy {
   protected subscriptions: Subscription[] = [];
-  invalid = false;
-  valid = false;
   _dynamic = false;
   @ContentChild(ClrLabel, { static: false })
   label: ClrLabel;
   control: NgControl;
+  state: CONTROL_STATE;
 
-  get help() {
-    return this.valid === false && this.invalid === false;
+  get help(): boolean {
+    return [CONTROL_STATE.TOUCHED, CONTROL_STATE.UNTOUCHED, undefined].includes(this.state);
+  }
+
+  get valid(): boolean {
+    return this.state === CONTROL_STATE.VALID;
+  }
+
+  get invalid(): boolean {
+    return this.state === CONTROL_STATE.INVALID;
   }
 
   constructor(
-    protected ifErrorService: IfErrorService,
-    protected ifSuccessService: IfSuccessService,
+    protected ifControlStateService: IfControlStateService,
     @Optional() protected layoutService: LayoutService,
     protected controlClassService: ControlClassService,
     protected ngControlService: NgControlService
   ) {
     this.subscriptions.push(
-      this.ifErrorService.statusChanges.subscribe(invalid => {
-        this.invalid = invalid;
-      })
-    );
-
-    this.subscriptions.push(
-      this.ifSuccessService.statusChanges.subscribe(valid => {
-        this.valid = valid;
+      this.ifControlStateService.statusChanges.subscribe((state: CONTROL_STATE) => {
+        this.state = state;
       })
     );
 
@@ -57,7 +56,8 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy 
   }
 
   controlClass() {
-    return this.controlClassService.controlClass({ invalid: this.invalid, valid: this.valid, grid: this.addGrid() });
+    // PASS state here
+    return this.controlClassService.controlClass({ state: this.state, grid: this.addGrid() });
   }
 
   addGrid() {

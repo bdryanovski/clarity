@@ -7,7 +7,6 @@
 import { Component, Inject, InjectionToken, Input, Optional, ContentChild } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-import { IfErrorService } from '../common/if-error/if-error.service';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { FocusService } from '../common/providers/focus.service';
@@ -15,8 +14,8 @@ import { LayoutService } from '../common/providers/layout.service';
 import { NgControlService } from '../common/providers/ng-control.service';
 import { ClrCommonStringsService } from '../../utils/i18n/common-strings.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
-import { IfSuccessService } from '../common/if-success/if-success.service';
 import { ClrControlSuccess } from '../common/success';
+import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 
 export const TOGGLE_SERVICE = new InjectionToken<BehaviorSubject<boolean>>(undefined);
 export function ToggleServiceFactory() {
@@ -65,13 +64,12 @@ export const TOGGLE_SERVICE_PROVIDER = { provide: TOGGLE_SERVICE, useFactory: To
     '[class.clr-row]': 'addGrid()',
   },
   providers: [
-    IfErrorService,
     NgControlService,
     ControlIdService,
     ControlClassService,
     FocusService,
     TOGGLE_SERVICE_PROVIDER,
-    IfSuccessService,
+    IfControlStateService,
   ],
 })
 export class ClrPasswordContainer extends ClrAbstractContainer {
@@ -93,8 +91,7 @@ export class ClrPasswordContainer extends ClrAbstractContainer {
   }
 
   constructor(
-    ifErrorService: IfErrorService,
-    ifSuccessService: IfSuccessService,
+    ifControlStateService: IfControlStateService,
     @Optional() layoutService: LayoutService,
     controlClassService: ControlClassService,
     ngControlService: NgControlService,
@@ -102,7 +99,7 @@ export class ClrPasswordContainer extends ClrAbstractContainer {
     @Inject(TOGGLE_SERVICE) private toggleService: BehaviorSubject<boolean>,
     public commonStrings: ClrCommonStringsService
   ) {
-    super(ifErrorService, ifSuccessService, layoutService, controlClassService, ngControlService);
+    super(ifControlStateService, layoutService, controlClassService, ngControlService);
 
     /* The unsubscribe is handle inside the ClrAbstractContainer */
     this.subscriptions.push(

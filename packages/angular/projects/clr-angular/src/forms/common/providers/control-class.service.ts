@@ -6,13 +6,13 @@
 
 import { Injectable, Optional, Renderer2 } from '@angular/core';
 import { LayoutService } from './layout.service';
+import { CONTROL_STATE } from '../if-control-state/if-control-state.service';
 
 const CLASS_ERROR = 'clr-error';
 const CLASS_SUCCESS = 'clr-success';
 
 export type ClrControlClassOptions = {
-  invalid?: boolean;
-  valid?: boolean;
+  state?: CONTROL_STATE;
   grid?: boolean;
   additional?: string;
 };
@@ -23,13 +23,14 @@ export class ControlClassService {
 
   constructor(@Optional() private layoutService: LayoutService) {}
 
-  controlClass(options: ClrControlClassOptions = { invalid: false, valid: false, grid: false, additional: '' }) {
+  controlClass(options: ClrControlClassOptions = { state: CONTROL_STATE.UNTOUCHED, grid: false, additional: '' }) {
     const controlClasses = [this.className, options.additional];
-    if (options.invalid && !options.valid) {
-      controlClasses.push(CLASS_ERROR);
-    }
-    if (options.valid && !options.invalid) {
+    if (options.state === CONTROL_STATE.VALID) {
       controlClasses.push(CLASS_SUCCESS);
+    }
+
+    if (options.state === CONTROL_STATE.INVALID) {
+      controlClasses.push(CLASS_ERROR);
     }
 
     if (options.grid && this.layoutService && this.className.indexOf('clr-col') === -1) {

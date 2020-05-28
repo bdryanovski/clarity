@@ -7,14 +7,13 @@
 import { Component, ContentChild, Optional } from '@angular/core';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
 
-import { IfErrorService } from '../common/if-error/if-error.service';
 import { NgControlService } from '../common/providers/ng-control.service';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
 import { LayoutService } from '../common/providers/layout.service';
-import { IfSuccessService } from '../common/if-success/if-success.service';
 import { ClrControlSuccess } from '../common/success';
+import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 
 @Component({
   selector: 'clr-select-container',
@@ -42,7 +41,7 @@ import { ClrControlSuccess } from '../common/success';
     '[class.clr-form-control-disabled]': 'control?.disabled',
     '[class.clr-row]': 'addGrid()',
   },
-  providers: [IfErrorService, IfSuccessService, NgControlService, ControlIdService, ControlClassService],
+  providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService],
 })
 export class ClrSelectContainer extends ClrAbstractContainer {
   @ContentChild(ClrControlSuccess)
@@ -53,13 +52,12 @@ export class ClrSelectContainer extends ClrAbstractContainer {
   private multi = false;
 
   constructor(
-    protected ifErrorService: IfErrorService,
-    protected ifSuccessService: IfSuccessService,
     @Optional() protected layoutService: LayoutService,
     protected controlClassService: ControlClassService,
-    protected ngControlService: NgControlService
+    protected ngControlService: NgControlService,
+    protected ifControlStateService: IfControlStateService
   ) {
-    super(ifErrorService, ifSuccessService, layoutService, controlClassService, ngControlService);
+    super(ifControlStateService, layoutService, controlClassService, ngControlService);
   }
 
   ngOnInit() {

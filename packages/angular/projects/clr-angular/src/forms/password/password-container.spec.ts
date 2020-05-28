@@ -10,13 +10,12 @@ import { By } from '@angular/platform-browser';
 
 import { ClrIconModule } from '../../icon/icon.module';
 import { ClrCommonFormsModule } from '../common/common.module';
-import { IfErrorService } from '../common/if-error/if-error.service';
-
 import { ClrPassword } from './password';
 import { ClrPasswordContainer } from './password-container';
 import { NgControlService } from '../common/providers/ng-control.service';
 import { LayoutService } from '../common/providers/layout.service';
 import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
+import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 
 @Component({
   template: `
@@ -70,7 +69,7 @@ export default function (): void {
         TestBed.configureTestingModule({
           imports: [ClrIconModule, ClrCommonFormsModule, FormsModule],
           declarations: [ClrPasswordContainer, ClrPassword, TemplateDrivenTest],
-          providers: [NgControl, NgControlService, IfErrorService, LayoutService],
+          providers: [IfControlStateService, NgControl, NgControlService, LayoutService],
         });
         fixture = TestBed.createComponent(TemplateDrivenTest);
 

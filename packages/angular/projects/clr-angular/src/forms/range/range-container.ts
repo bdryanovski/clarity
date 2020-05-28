@@ -6,14 +6,13 @@
 
 import { Component, Input, Optional, Renderer2, ContentChild } from '@angular/core';
 
-import { IfErrorService } from '../common/if-error/if-error.service';
 import { NgControlService } from '../common/providers/ng-control.service';
 import { LayoutService } from '../common/providers/layout.service';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
-import { IfSuccessService } from '../common/if-success/if-success.service';
 import { ClrControlSuccess } from '../common/success';
+import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 
 @Component({
   selector: 'clr-range-container',
@@ -42,7 +41,7 @@ import { ClrControlSuccess } from '../common/success';
     '[class.clr-form-control-disabled]': 'control?.disabled',
     '[class.clr-row]': 'addGrid()',
   },
-  providers: [IfErrorService, IfSuccessService, NgControlService, ControlIdService, ControlClassService],
+  providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService],
 })
 export class ClrRangeContainer extends ClrAbstractContainer {
   private _hasProgress = false;
@@ -62,15 +61,14 @@ export class ClrRangeContainer extends ClrAbstractContainer {
   }
 
   constructor(
-    ifErrorService: IfErrorService,
-    ifSuccessService: IfSuccessService,
     @Optional() layoutService: LayoutService,
     controlClassService: ControlClassService,
     ngControlService: NgControlService,
     private renderer: Renderer2,
-    private idService: ControlIdService
+    private idService: ControlIdService,
+    protected ifControlStateService: IfControlStateService
   ) {
-    super(ifErrorService, ifSuccessService, layoutService, controlClassService, ngControlService);
+    super(ifControlStateService, layoutService, controlClassService, ngControlService);
   }
 
   getRangeProgressFillWidth(): string {

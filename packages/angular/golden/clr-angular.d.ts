@@ -50,15 +50,15 @@ export declare abstract class ClrAbstractContainer implements DynamicWrapper, On
     control: NgControl;
     protected controlClassService: ControlClassService;
     get help(): boolean;
-    protected ifErrorService: IfErrorService;
-    protected ifSuccessService: IfSuccessService;
-    invalid: boolean;
+    protected ifControlStateService: IfControlStateService;
+    get invalid(): boolean;
     label: ClrLabel;
     protected layoutService: LayoutService;
     protected ngControlService: NgControlService;
+    state: CONTROL_STATE;
     protected subscriptions: Subscription[];
-    valid: boolean;
-    constructor(ifErrorService: IfErrorService, ifSuccessService: IfSuccessService, layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
+    get valid(): boolean;
+    constructor(ifControlStateService: IfControlStateService, layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
     addGrid(): boolean;
     controlClass(): string;
     ngOnDestroy(): void;
@@ -271,11 +271,10 @@ export declare class ClrCheckboxContainer extends ClrAbstractContainer {
     get clrInline(): boolean | string;
     protected controlClassService: ControlClassService;
     controllSuccessComponent: ClrControlSuccess;
-    protected ifErrorService: IfErrorService;
-    protected ifSuccessService: IfSuccessService;
+    protected ifControlStateService: IfControlStateService;
     protected layoutService: LayoutService;
     protected ngControlService: NgControlService;
-    constructor(ifErrorService: IfErrorService, ifSuccessService: IfSuccessService, layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
+    constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, ifControlStateService: IfControlStateService);
 }
 
 export declare class ClrCheckboxModule {
@@ -752,7 +751,8 @@ export declare class ClrDatalist implements AfterContentInit {
 export declare class ClrDatalistContainer extends ClrAbstractContainer {
     controllSuccessComponent: ClrControlSuccess;
     focus: boolean;
-    constructor(ifSuccessService: IfSuccessService, controlClassService: ControlClassService, layoutService: LayoutService, ifErrorService: IfErrorService, ngControlService: NgControlService, focusService: FocusService);
+    protected ifControlStateService: IfControlStateService;
+    constructor(controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService, focusService: FocusService, ifControlStateService: IfControlStateService);
 }
 
 export declare class ClrDatalistInput extends WrappedFormControl<ClrDatalistContainer> implements AfterContentInit {
@@ -783,8 +783,9 @@ export declare class ClrDateContainer implements DynamicWrapper, OnDestroy, Afte
     label: ClrLabel;
     get open(): boolean;
     get popoverPosition(): ClrPopoverPosition;
+    state: CONTROL_STATE;
     valid: boolean;
-    constructor(toggleService: ClrPopoverToggleService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, commonStrings: ClrCommonStringsService, ifErrorService: IfErrorService, ifSuccessService: IfSuccessService, focusService: FocusService, viewManagerService: ViewManagerService, controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService);
+    constructor(toggleService: ClrPopoverToggleService, dateNavigationService: DateNavigationService, datepickerEnabledService: DatepickerEnabledService, dateFormControlService: DateFormControlService, commonStrings: ClrCommonStringsService, focusService: FocusService, viewManagerService: ViewManagerService, controlClassService: ControlClassService, layoutService: LayoutService, ngControlService: NgControlService, ifControlStateService: IfControlStateService);
     addGrid(): boolean;
     controlClass(): string;
     ngAfterViewInit(): void;
@@ -1040,7 +1041,7 @@ export declare class ClrIfDragged<T> implements OnDestroy {
 
 export declare class ClrIfError {
     error: string;
-    constructor(ifErrorService: IfErrorService, ngControlService: NgControlService, template: TemplateRef<any>, container: ViewContainerRef);
+    constructor(ifControlStateService: IfControlStateService, ngControlService: NgControlService, template: TemplateRef<any>, container: ViewContainerRef);
     ngOnDestroy(): void;
 }
 
@@ -1064,8 +1065,8 @@ export declare class ClrIfOpen implements OnDestroy {
 }
 
 export declare class ClrIfSuccess {
-    success: string;
-    constructor(ifSuccessService: IfSuccessService, ngControlService: NgControlService, template: TemplateRef<any>, container: ViewContainerRef);
+    error: string;
+    constructor(ifControlStateService: IfControlStateService, ngControlService: NgControlService, template: TemplateRef<any>, container: ViewContainerRef);
     ngOnDestroy(): void;
 }
 
@@ -1215,7 +1216,7 @@ export declare class ClrPasswordContainer extends ClrAbstractContainer {
     focus: boolean;
     focusService: FocusService;
     show: boolean;
-    constructor(ifErrorService: IfErrorService, ifSuccessService: IfSuccessService, layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, focusService: FocusService, toggleService: BehaviorSubject<boolean>, commonStrings: ClrCommonStringsService);
+    constructor(ifControlStateService: IfControlStateService, layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, focusService: FocusService, toggleService: BehaviorSubject<boolean>, commonStrings: ClrCommonStringsService);
     toggle(): void;
 }
 
@@ -1333,11 +1334,10 @@ export declare class ClrRadioContainer extends ClrAbstractContainer {
     get clrInline(): boolean | string;
     protected controlClassService: ControlClassService;
     controllSuccessComponent: ClrControlSuccess;
-    protected ifErrorService: IfErrorService;
-    protected ifSuccessService: IfSuccessService;
+    protected ifControlStateService: IfControlStateService;
     protected layoutService: LayoutService;
     protected ngControlService: NgControlService;
-    constructor(ifErrorService: IfErrorService, ifSuccessService: IfSuccessService, layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
+    constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, ifControlStateService: IfControlStateService);
 }
 
 export declare class ClrRadioModule {
@@ -1357,7 +1357,8 @@ export declare class ClrRangeContainer extends ClrAbstractContainer {
     controllSuccessComponent: ClrControlSuccess;
     set hasProgress(val: boolean);
     get hasProgress(): boolean;
-    constructor(ifErrorService: IfErrorService, ifSuccessService: IfSuccessService, layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, renderer: Renderer2, idService: ControlIdService);
+    protected ifControlStateService: IfControlStateService;
+    constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, renderer: Renderer2, idService: ControlIdService, ifControlStateService: IfControlStateService);
     getRangeProgressFillWidth(): string;
 }
 
@@ -1385,12 +1386,11 @@ export declare class ClrSelect extends WrappedFormControl<ClrSelectContainer> {
 export declare class ClrSelectContainer extends ClrAbstractContainer {
     protected controlClassService: ControlClassService;
     controllSuccessComponent: ClrControlSuccess;
-    protected ifErrorService: IfErrorService;
-    protected ifSuccessService: IfSuccessService;
+    protected ifControlStateService: IfControlStateService;
     protected layoutService: LayoutService;
     multiple: SelectMultipleControlValueAccessor;
     protected ngControlService: NgControlService;
-    constructor(ifErrorService: IfErrorService, ifSuccessService: IfSuccessService, layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
+    constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService, ifControlStateService: IfControlStateService);
     ngOnInit(): void;
     wrapperClass(): "clr-multiselect-wrapper" | "clr-select-wrapper";
 }

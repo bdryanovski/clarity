@@ -9,12 +9,11 @@ import { ControlClassService } from '../common/providers/control-class.service';
 import { LayoutService } from '../common/providers/layout.service';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { FocusService } from '../common/providers/focus.service';
-import { IfErrorService } from '../common/if-error/if-error.service';
 import { NgControlService } from '../common/providers/ng-control.service';
 import { DatalistIdService } from './providers/datalist-id.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
-import { IfSuccessService } from '../common/if-success/if-success.service';
 import { ClrControlSuccess } from '../common/success';
+import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 
 @Component({
   selector: 'clr-datalist-container',
@@ -50,10 +49,9 @@ import { ClrControlSuccess } from '../common/success';
     LayoutService,
     ControlIdService,
     FocusService,
-    IfErrorService,
     NgControlService,
     DatalistIdService,
-    IfSuccessService,
+    IfControlStateService,
   ],
 })
 export class ClrDatalistContainer extends ClrAbstractContainer {
@@ -62,14 +60,13 @@ export class ClrDatalistContainer extends ClrAbstractContainer {
   @ContentChild(ClrControlSuccess) controllSuccessComponent: ClrControlSuccess;
 
   constructor(
-    ifSuccessService: IfSuccessService,
     controlClassService: ControlClassService,
     @Optional() layoutService: LayoutService,
-    ifErrorService: IfErrorService,
     ngControlService: NgControlService,
-    private focusService: FocusService
+    private focusService: FocusService,
+    protected ifControlStateService: IfControlStateService
   ) {
-    super(ifErrorService, ifSuccessService, layoutService, controlClassService, ngControlService);
+    super(ifControlStateService, layoutService, controlClassService, ngControlService);
 
     this.subscriptions.push(this.focusService.focusChange.subscribe(state => (this.focus = state)));
   }

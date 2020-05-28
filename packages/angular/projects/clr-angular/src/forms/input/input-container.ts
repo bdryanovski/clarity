@@ -6,13 +6,12 @@
 
 import { Component, ContentChild } from '@angular/core';
 
-import { IfErrorService } from '../common/if-error/if-error.service';
-import { IfSuccessService } from '../common/if-success/if-success.service';
 import { NgControlService } from '../common/providers/ng-control.service';
 import { ControlIdService } from '../common/providers/control-id.service';
 import { ControlClassService } from '../common/providers/control-class.service';
 import { ClrAbstractContainer } from '../common/abstract-container';
 import { ClrControlSuccess } from '../common/success';
+import { IfControlStateService } from '../common/if-control-state/if-control-state.service';
 
 @Component({
   selector: 'clr-input-container',
@@ -40,7 +39,7 @@ import { ClrControlSuccess } from '../common/success';
     '[class.clr-form-control-disabled]': 'control?.disabled',
     '[class.clr-row]': 'addGrid()',
   },
-  providers: [IfErrorService, IfSuccessService, NgControlService, ControlIdService, ControlClassService],
+  providers: [IfControlStateService, NgControlService, ControlIdService, ControlClassService],
 })
 export class ClrInputContainer extends ClrAbstractContainer {
   @ContentChild(ClrControlSuccess) controllSuccessComponent: ClrControlSuccess;

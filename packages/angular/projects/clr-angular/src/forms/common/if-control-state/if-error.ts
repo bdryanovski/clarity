@@ -6,57 +6,59 @@
 import { Directive, Input, Optional, TemplateRef, ViewContainerRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { IfErrorService } from './if-error.service';
 import { NgControlService } from '../providers/ng-control.service';
 import { NgControl } from '@angular/forms';
+import { IfControlStateService, CONTROL_STATE } from './if-control-state.service';
 
 @Directive({ selector: '[clrIfError]' })
 export class ClrIfError {
+  private subscriptions: Subscription[] = [];
+  private displayed = false;
+  private control: NgControl;
+
+  @Input('clrIfError') error: string;
+
   constructor(
-    @Optional() private ifErrorService: IfErrorService,
+    @Optional() private ifControlStateService: IfControlStateService,
     @Optional() private ngControlService: NgControlService,
     private template: TemplateRef<any>,
     private container: ViewContainerRef
   ) {
-    if (!this.ifErrorService) {
+    if (!this.ifControlStateService) {
       throw new Error('clrIfError can only be used within a form control container element like clr-input-container');
-    } else {
-      this.displayError(false);
     }
+
     this.subscriptions.push(
       this.ngControlService.controlChanges.subscribe(control => {
         this.control = control;
       })
     );
     this.subscriptions.push(
-      this.ifErrorService.statusChanges.subscribe(invalid => {
-        // If there is a specific error to track, check it, otherwise check overall validity
-        if (this.error && this.control) {
-          this.displayError(this.control.hasError(this.error));
-        } else {
-          this.displayError(invalid);
-        }
+      this.ifControlStateService.statusChanges.subscribe((state: CONTROL_STATE) => {
+        this.displayError(state);
       })
     );
   }
-
-  @Input('clrIfError') error: string;
-
-  private subscriptions: Subscription[] = [];
-  private displayed = false;
-  private control: NgControl;
 
   ngOnDestroy() {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
-  private displayError(invalid: boolean) {
-    if (invalid && !this.displayed) {
-      this.container.createEmbeddedView(this.template, { error: this.control.getError(this.error) });
-      this.displayed = true;
-    } else if (!invalid) {
+  /**
+   * @param state CONTROL_STATE or boolean
+   */
+  private displayError(state: CONTROL_STATE) {
+    const INVALID = CONTROL_STATE.INVALID === state;
+
+    if (INVALID && this.displayed === false) {
+      let options = {};
+      if (this.error && this.control && this.control.hasError(this.error)) {
+        options = { error: this.control.getError(this.error) };
+      }
+      this.container.createEmbeddedView(this.template, options);
+    } else if (!INVALID) {
       this.container.clear();
-      this.displayed = false;
     }
+    this.displayed = INVALID;
   }
 }
