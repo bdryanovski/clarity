@@ -12,9 +12,6 @@ import { ClrControlSuccess } from './success';
 @Component({ template: `<clr-control-success>Test success message</clr-control-success>` })
 class SimpleTest {}
 
-@Component({ template: `<clr-control-success aria-describedby="hello"></clr-control-success>` })
-class ExplicitAriaTest {}
-
 export default function (): void {
   describe('ClrControlSuccess', () => {
     let fixture: ComponentFixture<SimpleTest>;
@@ -22,7 +19,7 @@ export default function (): void {
 
     beforeEach(function () {
       TestBed.configureTestingModule({
-        declarations: [ClrControlSuccess, SimpleTest, ExplicitAriaTest],
+        declarations: [ClrControlSuccess, SimpleTest],
         providers: [ControlIdService],
       });
       fixture = TestBed.createComponent(SimpleTest);

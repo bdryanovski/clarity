@@ -13,9 +13,6 @@ import { ControlIdService } from './providers/control-id.service';
 @Component({ template: `<clr-control-error>Test error</clr-control-error>` })
 class SimpleTest {}
 
-@Component({ template: `<clr-control-error aria-describedby="hello"></clr-control-error>` })
-class ExplicitAriaTest {}
-
 export default function (): void {
   describe('ClrControlError', () => {
     let fixture: ComponentFixture<SimpleTest>, announceSpyOn;
@@ -23,7 +20,7 @@ export default function (): void {
 
     beforeEach(function () {
       TestBed.configureTestingModule({
-        declarations: [ClrControlError, SimpleTest, ExplicitAriaTest],
+        declarations: [ClrControlError, SimpleTest],
         providers: [ControlIdService],
       });
       fixture = TestBed.createComponent(SimpleTest);
