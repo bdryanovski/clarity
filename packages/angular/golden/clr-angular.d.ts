@@ -49,12 +49,12 @@ export declare abstract class ClrAbstractContainer implements DynamicWrapper, On
     _dynamic: boolean;
     control: NgControl;
     protected controlClassService: ControlClassService;
-    get help(): boolean;
     protected ifControlStateService: IfControlStateService;
     get invalid(): boolean;
     label: ClrLabel;
     protected layoutService: LayoutService;
     protected ngControlService: NgControlService;
+    get showHelper(): boolean;
     state: CONTROL_STATE;
     protected subscriptions: Subscription[];
     get valid(): boolean;
@@ -1039,10 +1039,10 @@ export declare class ClrIfDragged<T> implements OnDestroy {
     ngOnDestroy(): void;
 }
 
-export declare class ClrIfError {
+export declare class ClrIfError extends AbstractIfState {
     error: string;
     constructor(ifControlStateService: IfControlStateService, ngControlService: NgControlService, template: TemplateRef<any>, container: ViewContainerRef);
-    ngOnDestroy(): void;
+    protected handleState(state: CONTROL_STATE): void;
 }
 
 export declare class ClrIfExpanded implements OnInit, OnDestroy {
@@ -1064,10 +1064,9 @@ export declare class ClrIfOpen implements OnDestroy {
     static ngAcceptInputType_open: boolean | '';
 }
 
-export declare class ClrIfSuccess {
-    error: string;
+export declare class ClrIfSuccess extends AbstractIfState {
     constructor(ifControlStateService: IfControlStateService, ngControlService: NgControlService, template: TemplateRef<any>, container: ViewContainerRef);
-    ngOnDestroy(): void;
+    protected handleState(state: CONTROL_STATE): void;
 }
 
 export declare class ClrInput extends WrappedFormControl<ClrInputContainer> {
