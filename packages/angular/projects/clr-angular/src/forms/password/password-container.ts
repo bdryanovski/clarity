@@ -53,7 +53,7 @@ export const TOGGLE_SERVICE_PROVIDER = { provide: TOGGLE_SERVICE, useFactory: To
           aria-hidden="true"
         ></clr-icon>
       </div>
-      <ng-content select="clr-control-helper" *ngIf="help"></ng-content>
+      <ng-content select="clr-control-helper" *ngIf="showHelper"></ng-content>
       <ng-content select="clr-control-error" *ngIf="invalid"></ng-content>
       <ng-content select="clr-control-success" *ngIf="valid"></ng-content>
     </div>

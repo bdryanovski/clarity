@@ -24,7 +24,7 @@ export abstract class ClrAbstractContainer implements DynamicWrapper, OnDestroy 
   control: NgControl;
   state: CONTROL_STATE;
 
-  get help(): boolean {
+  get showHelper(): boolean {
     return [CONTROL_STATE.TOUCHED, CONTROL_STATE.UNTOUCHED, undefined].includes(this.state);
   }
 
