@@ -17,6 +17,9 @@ jobs:
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - run: yarn install
       - run: yarn build:ci
+      - name: Deploy Core Storybook to Chromatic
+        working-directory: ./packages/core
+        run: npx chromatic --project-token=${{ secrets.CHROMATIC_PROJECT_TOKEN }} --storybook-build-dir=./dist/storybook/core --exit-zero-on-changes --ci
 
     env:
       CI: true

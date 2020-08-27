@@ -194,7 +194,7 @@ export const bannerGroupStatus = () => {
       </cds-alert-group>
 
       <cds-alert-group type="banner" status="info">
-        <cds-alert status="loading">
+        <cds-alert class="chromatic-ignore" status="loading">
           This example is an alert with alert actions and a status of "loading" inside a banner alert group.
           <cds-alert-actions>
             <cds-button>Button 1</cds-button>
@@ -314,7 +314,7 @@ export const lightweightAlertGroup = () => {
         This example is an alert with a status of "danger" and inline action buttons inside a lightweight alert group.
         <cds-inline-button>Clickable Action</cds-inline-button>
       </cds-alert>
-      <cds-alert status="loading">
+      <cds-alert class="chromatic-ignore" status="loading">
         This example is an alert with a status of "loading" inside a lightweight alert group.
         <cds-alert-actions>
           <cds-button>Alert actions should not be viewable in lightweight alerts</cds-button>
@@ -391,7 +391,7 @@ export const compactAlertGroup = () => {
       </cds-alert-group>
 
       <cds-alert-group status="danger" size="sm">
-        <cds-alert status="loading" closable>
+        <cds-alert class="chromatic-ignore" status="loading" closable>
           This example is a closable alert with a status of "loading" inside a compact alert group with a status of
           "danger".
         </cds-alert>
@@ -443,7 +443,7 @@ export const compactAlertGroup = () => {
           This example is an alert with a status of "danger" and an inline action inside a compact, lightweight alert
           group.<cds-inline-button>Clickable Action</cds-inline-button>
         </cds-alert>
-        <cds-alert status="loading">
+        <cds-alert class="chromatic-ignore" status="loading">
           This example is an alert with a status of "loading" inside a compact, lightweight alert group.
           <cds-alert-actions>
             <cds-button>Alert actions should not be viewable in lightweight alerts</cds-button>
