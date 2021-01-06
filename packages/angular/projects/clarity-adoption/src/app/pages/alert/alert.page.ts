@@ -5,6 +5,17 @@ import { Component } from '@angular/core';
   templateUrl: './alert.page.html',
 })
 export class AlertPage {
+  d1 = [
+    ['src/index.html', '4.0.0/alerts/sb/index.html'],
+    ['angular.json', '4.0.0/alerts/sb/angular.txt'] /* json files are hard to import without errors */,
+    [
+      'src/main.ts',
+      '4.0.0/alerts/sb/main.txt',
+    ] /* imported file try to resolve internal imports so that why it's txt */,
+    ['src/app/app.module.ts', '4.0.0/alerts/sb/app.module.ts'],
+    ['src/app/alert.ng.html', '4.0.0/alerts/sb/alert.ng.html'],
+  ];
+
   code = [
     {
       ng: {

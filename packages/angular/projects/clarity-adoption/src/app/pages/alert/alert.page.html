@@ -11,6 +11,8 @@
 
 <h3>Examples</h3>
 
+<stackblitz [filesRaw]="d1"></stackblitz>
+
 <div class="space-bottom" *ngFor="let example of code">
   <example-wrapper *ngIf="example.ng" [code]="example.ng.files" [component]="example.ng.component">
     <h4 *ngIf="example.ng.title">{{ example.ng.title }}</h4>

@@ -19,6 +19,7 @@ import { EmbedComponent } from './components/dynamic/embed-component.component';
 import { ExampleWrapper } from './components/example-wrapper';
 
 import '@clr/icons/shapes/all-shapes';
+import { StackBlitz } from './components/stackblitz/stackblitz';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import '@clr/icons/shapes/all-shapes';
     DynamicHostDirective,
     EmbedComponent,
     ExampleWrapper,
+    StackBlitz,
   ],
   imports: [BrowserModule, AppRoutingModule, ClarityModule, BrowserAnimationsModule],
   providers: [],
