@@ -5,7 +5,7 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != 'vmware/clarity'
+    # if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != 'vmware/clarity'
 
     steps:
       - uses: actions/checkout@v2
@@ -21,6 +21,7 @@ jobs:
       - run: yarn build:website
       - run: yarn build:storybook:angular
       - run: yarn build:storybook:core
+      - run: yarn build:adoption
       - run: yarn website:functions
       - run: npm run website:deploy # Use NPM as a workaround for npx executing
 
